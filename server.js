@@ -2,15 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
+app.use(cors());
 app.use(express.json());
-
-app.options('*', cors());
 
 app.get('/', (req, res) => {
   res.json({ status: 'Posto server is running!' });
@@ -54,4 +47,4 @@ Réponds UNIQUEMENT dans ce format.`;
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
+app.listen(PORT, () => console.log(`Serveur demarré sur le port ${PORT}`));
