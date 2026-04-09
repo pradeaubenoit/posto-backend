@@ -12,17 +12,15 @@ app.get('/', (req, res) => {
 app.post('/generate', async (req, res) => {
   const { cta, highlight, title, aiTitle } = req.body;
 
-  const prompt = `Tu es l'assistant créatif d'un commerçant. Type de post : Fierté d'entreprise.
+  const prompt = `Tu es l'assistant créatif de BDLIM, blanchisserie fondée en 1916.
 Titre : "${title}"
 Mise en avant : "${highlight}"
 CTA : ${cta}
 
-Génère :
-${aiTitle === 'Oui' ? 'NOUVEAU_TITRE: [titre amélioré, max 8 mots]\n' : ''}CAPTION_1: [caption Instagram authentique, 2-3 phrases]
-CAPTION_2: [caption différente, 2-3 phrases]
-CAPTION_3: [caption plus poétique, 2-3 phrases]
-
-Réponds UNIQUEMENT dans ce format.`;
+Réponds EXACTEMENT dans ce format :
+CAPTION_1: [première caption avec emojis]
+CAPTION_2: [deuxième caption différente avec emojis]
+CAPTION_3: [troisième caption poétique avec emojis]`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -33,14 +31,31 @@ Réponds UNIQUEMENT dans ce format.`;
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 600,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 800,
         messages: [{ role: 'user', content: prompt }]
       })
     });
 
     const data = await response.json();
-    res.json({ text: data.content[0].text });
+    
+    // Return full response for debugging
+    if (!data.content || !data.content[0]) {
+      return res.json({ error: 'API error', fullResponse: data });
+    }
+    
+    const text = data.content[0].text;
+    const captions = [];
+    
+    const lines = text.split('\n');
+    for (const line of lines) {
+      const t = line.trim();
+      if (t.startsWith('CAPTION_1:')) captions[0] = t.replace('CAPTION_1:', '').trim();
+      else if (t.startsWith('CAPTION_2:')) captions[1] = t.replace('CAPTION_2:', '').trim();
+      else if (t.startsWith('CAPTION_3:')) captions[2] = t.replace('CAPTION_3:', '').trim();
+    }
+
+    res.json({ captions: captions.filter(Boolean), rawText: text });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
