@@ -38,4 +38,5 @@ Réponds UNIQUEMENT dans ce format.`;
   res.json({ text: data.content[0].text });
 });
 
-app.listen(3000, () => console.log('Serveur démarré sur le port 3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
