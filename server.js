@@ -12,15 +12,17 @@ app.get('/', (req, res) => {
 app.post('/generate', async (req, res) => {
   const { cta, highlight, title, aiTitle } = req.body;
 
-  const prompt = `Tu es l'assistant créatif de BDLIM, blanchisserie fondée en 1916.
-Titre : "${title}"
-Mise en avant : "${highlight}"
-CTA : ${cta}
+  const prompt = `Tu es un expert en réseaux sociaux pour BDLIM, blanchisserie industrielle fondée en 1916.
 
-Réponds EXACTEMENT dans ce format :
-CAPTION_1: [première caption avec emojis]
-CAPTION_2: [deuxième caption différente avec emojis]
-CAPTION_3: [troisième caption poétique avec emojis]`;
+Génère IMMÉDIATEMENT 3 captions Instagram différentes pour ce post :
+- Titre : "${title}"
+- Mise en avant : "${highlight}"
+- CTA : ${cta === 'Oui' ? 'Inclure un appel à l\'action' : 'Pas de CTA'}
+
+RÉPONDS UNIQUEMENT avec ce format exact, sans introduction ni question :
+${aiTitle === 'Oui' ? 'NOUVEAU_TITRE: [titre accrocheur max 8 mots]\n' : ''}CAPTION_1: [caption authentique 2-3 phrases avec emojis]
+CAPTION_2: [caption différente 2-3 phrases avec emojis]
+CAPTION_3: [caption poétique 2-3 phrases avec emojis]`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -31,7 +33,7 @@ CAPTION_3: [troisième caption poétique avec emojis]`;
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 800,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -39,23 +41,26 @@ CAPTION_3: [troisième caption poétique avec emojis]`;
 
     const data = await response.json();
     
-    // Return full response for debugging
     if (!data.content || !data.content[0]) {
-      return res.json({ error: 'API error', fullResponse: data });
+      return res.status(500).json({ error: 'API error', fullResponse: data });
     }
     
     const text = data.content[0].text;
+    
+    let newTitle = null;
     const captions = [];
     
     const lines = text.split('\n');
     for (const line of lines) {
       const t = line.trim();
-      if (t.startsWith('CAPTION_1:')) captions[0] = t.replace('CAPTION_1:', '').trim();
+      if (t.startsWith('NOUVEAU_TITRE:')) newTitle = t.replace('NOUVEAU_TITRE:', '').trim();
+      else if (t.startsWith('CAPTION_1:')) captions[0] = t.replace('CAPTION_1:', '').trim();
       else if (t.startsWith('CAPTION_2:')) captions[1] = t.replace('CAPTION_2:', '').trim();
       else if (t.startsWith('CAPTION_3:')) captions[2] = t.replace('CAPTION_3:', '').trim();
     }
 
-    res.json({ captions: captions.filter(Boolean), rawText: text });
+    res.json({ newTitle, captions: captions.filter(Boolean), rawText: text });
+    
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
