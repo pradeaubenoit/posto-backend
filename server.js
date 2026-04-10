@@ -14,17 +14,17 @@ app.get('/', (req, res) => {
 app.post('/generate', async (req, res) => {
   const { cta, highlight, title, aiTitle } = req.body;
 
-  const prompt = `Tu es un expert en réseaux sociaux pour BDLIM, blanchisserie industrielle fondée en 1916.
+  const prompt = `Tu es un expert en reseaux sociaux pour BDLIM, blanchisserie industrielle fondee en 1916.
 
-Génère IMMÉDIATEMENT 3 captions Instagram différentes pour ce post :
-- Titre : "${title}"
-- Mise en avant : "${highlight}"
-- CTA : ${cta === 'Oui' ? 'Inclure un appel à l\'action' : 'Pas de CTA'}
+Genere IMMEDIATEMENT 3 captions Instagram differentes pour ce post.
+Titre : "${title}"
+Mise en avant : "${highlight}"
+CTA : ${cta === 'Oui' ? 'Inclure un appel a laction' : 'Pas de CTA'}
 
-RÉPONDS UNIQUEMENT avec ce format exact, sans introduction ni question :
-${aiTitle === 'Oui' ? 'NOUVEAU_TITRE: [titre accrocheur max 8 mots]\n' : ''}CAPTION_1: [caption authentique 2-3 phrases avec emojis]
-CAPTION_2: [caption différente 2-3 phrases avec emojis]
-CAPTION_3: [caption poétique 2-3 phrases avec emojis]`;
+REPONDS UNIQUEMENT dans ce format exact :
+${aiTitle === 'Oui' ? 'NOUVEAU_TITRE: [titre max 8 mots]\n' : ''}CAPTION_1: [caption 2-3 phrases avec emojis]
+CAPTION_2: [caption differente 2-3 phrases avec emojis]
+CAPTION_3: [caption poetique 2-3 phrases avec emojis]`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -47,21 +47,8 @@ CAPTION_3: [caption poétique 2-3 phrases avec emojis]`;
       return res.status(500).json({ error: 'API error', fullResponse: data });
     }
     
-    const text = data.content[0].text;
-    
-    let newTitle = null;
-    const captions = [];
-    
-    const lines = text.split('\n');
-    for (const line of lines) {
-      const t = line.trim();
-      if (t.startsWith('NOUVEAU_TITRE:')) newTitle = t.replace('NOUVEAU_TITRE:', '').trim();
-      else if (t.startsWith('CAPTION_1:')) captions[0] = t.replace('CAPTION_1:', '').trim();
-      else if (t.startsWith('CAPTION_2:')) captions[1] = t.replace('CAPTION_2:', '').trim();
-      else if (t.startsWith('CAPTION_3:')) captions[2] = t.replace('CAPTION_3:', '').trim();
-    }
-
-    res.json({ newTitle, captions: captions.filter(Boolean), rawText: text });
+    // Return as "text" so the HTML can parse it
+    res.json({ text: data.content[0].text });
     
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -69,4 +56,4 @@ CAPTION_3: [caption poétique 2-3 phrases avec emojis]`;
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Serveur demarré sur le port ${PORT}`));
+app.listen(PORT, () => console.log(`Serveur demarre sur le port ${PORT}`));
