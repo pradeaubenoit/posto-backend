@@ -141,7 +141,7 @@ async function generate() {
     });
     
     const data = await res.json();
-    const text = data.text || '';
+    const captions = data.captions || []; let newTitle = data.newTitle || null;
     
     let newTitle = null;
     const captions = [];
