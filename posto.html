@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Posto × BDLIM</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #07080f; color: #eeeae4; font-family: Georgia, serif; max-width: 430px; margin: 0 auto; min-height: 100vh; }
+.header { padding: 16px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; background: #07080f; z-index: 10; }
+.header .sub { font-size: 10px; letter-spacing: 4px; color: #3d8ce0; font-family: monospace; margin-bottom: 2px; }
+.header h1 { font-size: 19px; font-weight: bold; }
+.header h1 span { color: #3d8ce0; }
+.content { padding: 20px; }
+.logo-box { border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.09); margin-bottom: 22px; }
+.logo-inner { background: #0d1e38; height: 160px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; }
+.logo-inner .name { font-size: 20px; font-weight: bold; color: #7bb6f0; letter-spacing: 4px; }
+.logo-inner .since { font-size: 10px; color: rgba(123,182,240,0.6); letter-spacing: 3px; }
+.logo-footer { background: #0a1225; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center; }
+.logo-footer span { font-size: 11px; color: #7bb6f0; }
+.badge { font-size: 9px; padding: 2px 8px; border-radius: 10px; background: rgba(61,140,224,0.15); color: #3d8ce0; font-family: monospace; }
+.label { font-size: 9px; letter-spacing: 3px; color: rgba(238,234,228,0.35); font-family: monospace; margin-bottom: 8px; margin-top: 18px; }
+.toggle-row { display: flex; gap: 10px; }
+.toggle { flex: 1; padding: 11px; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; background: transparent; color: rgba(238,234,228,0.45); font-size: 14px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.toggle.active-blue { border-color: #3d8ce0; background: rgba(61,140,224,0.12); color: #3d8ce0; }
+.toggle.active-purple { border-color: #7b5ea7; background: rgba(123,94,167,0.12); color: #b39ddb; }
+input { width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; color: #eeeae4; font-size: 14px; outline: none; font-family: inherit; }
+.btn-generate { width: 100%; padding: 15px; background: linear-gradient(135deg,#0e3270,#3d8ce0); border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: bold; cursor: pointer; font-family: inherit; margin-top: 20px; }
+.btn-generate:disabled { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.2); cursor: default; }
+.error { margin-top: 16px; padding: 12px 14px; border-radius: 10px; background: rgba(200,50,50,0.1); border: 1px solid rgba(200,50,50,0.3); color: #ff8a8a; font-size: 13px; display: none; }
+.loading { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; gap: 18px; }
+.spinner { width: 50px; height: 50px; border-radius: 50%; border: 3px solid rgba(61,140,224,0.12); border-top: 3px solid #3d8ce0; animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.results { display: none; }
+.ai-title { padding: 14px 16px; border-radius: 12px; margin-bottom: 20px; background: rgba(123,94,167,0.08); border: 1px solid rgba(123,94,167,0.2); }
+.ai-title .ai-label { font-size: 9px; letter-spacing: 2px; color: #b39ddb; font-family: monospace; margin-bottom: 6px; }
+.ai-title h3 { font-size: 15px; font-weight: bold; margin-bottom: 4px; }
+.ai-title .original { font-size: 11px; color: rgba(238,234,228,0.3); }
+.section-label { font-size: 9px; letter-spacing: 2px; color: #3d8ce0; font-family: monospace; margin-bottom: 10px; }
+.captions { margin-bottom: 22px; }
+.caption { padding: 13px 15px; margin-bottom: 9px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.07); font-size: 13px; line-height: 1.6; cursor: pointer; color: rgba(238,234,228,0.45); }
+.caption.selected { border-color: #3d8ce0; background: rgba(61,140,224,0.07); color: #eeeae4; }
+.btn-save { width: 100%; padding: 15px; background: linear-gradient(135deg,#0e3270,#3d8ce0); border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: bold; cursor: pointer; font-family: inherit; margin-bottom: 10px; }
+.btn-reset { width: 100%; padding: 11px; background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: rgba(238,234,228,0.4); font-size: 13px; cursor: pointer; font-family: inherit; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="sub">STUDIO IA</div>
+  <h1>Posto <span>×</span> BDLIM</h1>
+</div>
+
+<div id="form-section" class="content">
+  <div class="logo-box">
+    <div class="logo-inner">
+      <div class="name">BDLIM</div>
+      <div class="since">SINCE 1916</div>
+    </div>
+    <div class="logo-footer">
+      <span>Logo BDLIM · Bulles bleues</span>
+      <span class="badge">Fierté d'entreprise</span>
+    </div>
+  </div>
+
+  <div class="label">CALL TO ACTION</div>
+  <div class="toggle-row">
+    <button class="toggle" onclick="select('cta','Oui',this,'blue')">Oui</button>
+    <button class="toggle" onclick="select('cta','Non',this,'blue')">Non</button>
+  </div>
+
+  <div class="label">CE QUE TU VEUX METTRE EN AVANT</div>
+  <input id="highlight" placeholder="ex : 100 ans d'histoire, savoir-faire, équipe…" />
+
+  <div class="label">TON TITRE</div>
+  <input id="title" placeholder="ex : Depuis 1916, on lave plus blanc !" />
+
+  <div class="label">L'IA AMÉLIORE TON TITRE ?</div>
+  <div class="toggle-row">
+    <button class="toggle" onclick="select('aiTitle','Oui',this,'purple')">Oui</button>
+    <button class="toggle" onclick="select('aiTitle','Non',this,'purple')">Non</button>
+  </div>
+
+  <div id="error" class="error"></div>
+  <button id="btn-gen" class="btn-generate" onclick="generate()" disabled>✨ Générer avec l'IA</button>
+</div>
+
+<div id="loading" class="loading">
+  <div class="spinner"></div>
+  <div style="font-size:15px;font-weight:bold;">L'IA génère ton contenu…</div>
+  <div style="font-size:12px;color:rgba(238,234,228,0.3);">Connexion au serveur · Génération en cours</div>
+</div>
+
+<div id="results" class="results content">
+  <div id="ai-title-box" class="ai-title" style="display:none">
+    <div class="ai-label">✨ TITRE AMÉLIORÉ PAR L'IA</div>
+    <h3 id="ai-title-text"></h3>
+    <div class="original" id="original-title"></div>
+  </div>
+  <div class="section-label">3 CAPTIONS GÉNÉRÉES PAR L'IA</div>
+  <div class="captions" id="captions"></div>
+  <button class="btn-save" onclick="reset()">💾 Enregistrer dans la galerie</button>
+  <button class="btn-reset" onclick="reset()">↩ Nouveau post</button>
+</div>
+
+<script>
+const state = { cta: null, aiTitle: null };
+
+function select(key, val, btn, color) {
+  state[key] = val;
+  const row = btn.parentElement;
+  row.querySelectorAll('.toggle').forEach(b => {
+    b.classList.remove('active-blue', 'active-purple');
+  });
+  btn.classList.add('active-' + color);
+  checkForm();
+}
+
+function checkForm() {
+  const ok = state.cta && state.aiTitle && 
+    document.getElementById('highlight').value.trim() && 
+    document.getElementById('title').value.trim();
+  document.getElementById('btn-gen').disabled = !ok;
+}
+
+document.getElementById('highlight').addEventListener('input', checkForm);
+document.getElementById('title').addEventListener('input', checkForm);
+
+async function generate() {
+  const highlight = document.getElementById('highlight').value.trim();
+  const title = document.getElementById('title').value.trim();
+  
+  document.getElementById('form-section').style.display = 'none';
+  document.getElementById('loading').style.display = 'flex';
+  document.getElementById('error').style.display = 'none';
+
+  try {
+    const res = await fetch('https://posto-production-061c.up.railway.app/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cta: state.cta, highlight, title, aiTitle: state.aiTitle })
+    });
+    
+    const data = await res.json();
+    const text = data.text || '';
+    
+    let newTitle = null;
+    const captions = [];
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    for (const line of lines) {
+      if (line.startsWith('NOUVEAU_TITRE:')) newTitle = line.replace('NOUVEAU_TITRE:', '').trim();
+      else if (line.match(/^CAPTION_\d+:/)) captions.push(line.replace(/^CAPTION_\d+:\s*/, '').trim());
+    }
+    while (captions.length < 3) captions.push('✨ Depuis 1916, BDLIM perpétue l\'excellence. 💙');
+
+    if (newTitle) {
+      document.getElementById('ai-title-box').style.display = 'block';
+      document.getElementById('ai-title-text').textContent = newTitle;
+      document.getElementById('original-title').textContent = 'Ton titre : « ' + title + ' »';
+    }
+
+    const captionsDiv = document.getElementById('captions');
+    captionsDiv.innerHTML = '';
+    captions.slice(0,3).forEach((c, i) => {
+      const div = document.createElement('div');
+      div.className = 'caption' + (i === 0 ? ' selected' : '');
+      div.textContent = c;
+      div.onclick = () => {
+        document.querySelectorAll('.caption').forEach(x => x.classList.remove('selected'));
+        div.classList.add('selected');
+      };
+      captionsDiv.appendChild(div);
+    });
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('form-section').style.display = 'block';
+    const err = document.getElementById('error');
+    err.style.display = 'block';
+    err.textContent = 'Erreur : ' + e.message;
+  }
+}
+
+function reset() {
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('form-section').style.display = 'block';
+  document.getElementById('ai-title-box').style.display = 'none';
+  state.cta = null;
+  state.aiTitle = null;
+  document.querySelectorAll('.toggle').forEach(b => b.classList.remove('active-blue','active-purple'));
+  document.getElementById('highlight').value = '';
+  document.getElementById('title').value = '';
+  document.getElementById('btn-gen').disabled = true;
+}
+</script>
+</body>
+</html>
