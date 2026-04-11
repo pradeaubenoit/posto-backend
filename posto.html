@@ -12,39 +12,76 @@ body { background: #07080f; color: #eeeae4; font-family: Georgia, serif; max-wid
 h1 { font-size: 19px; font-weight: bold; }
 h1 span { color: #3d8ce0; }
 .content { padding: 20px; }
-.photo-zone { border-radius: 14px; overflow: hidden; border: 1.5px dashed rgba(61,140,224,0.4); margin-bottom: 16px; min-height: 200px; display: flex; align-items: center; justify-content: center; background: #0d1e38; position: relative; cursor: pointer; }
-.photo-zone img { width: 100%; height: 200px; object-fit: cover; display: none; }
-.photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 30px; text-align: center; }
-.photo-icon { font-size: 48px; }
-.photo-text { font-size: 14px; color: rgba(238,234,228,0.6); }
-.photo-btns { display: flex; gap: 10px; margin-bottom: 22px; }
-.photo-btn { flex: 1; padding: 12px; border: 1.5px solid rgba(61,140,224,0.4); border-radius: 10px; background: rgba(61,140,224,0.08); color: #3d8ce0; font-size: 13px; cursor: pointer; font-family: inherit; text-align: center; }
+
+/* PAGE ACCUEIL */
+.welcome { padding: 30px 20px; }
+.welcome-title { font-size: 22px; font-weight: bold; margin-bottom: 8px; }
+.welcome-sub { font-size: 13px; color: rgba(238,234,228,0.5); margin-bottom: 32px; line-height: 1.5; }
+.choice-card { border-radius: 16px; padding: 24px; margin-bottom: 16px; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); transition: all 0.2s; }
+.choice-card:hover { border-color: #3d8ce0; background: rgba(61,140,224,0.06); }
+.choice-icon { font-size: 36px; margin-bottom: 12px; }
+.choice-title { font-size: 16px; font-weight: bold; margin-bottom: 6px; }
+.choice-desc { font-size: 12px; color: rgba(238,234,228,0.5); line-height: 1.5; }
+.choice-badge { display: inline-block; margin-top: 10px; font-size: 10px; padding: 3px 10px; border-radius: 10px; background: rgba(61,140,224,0.15); color: #3d8ce0; font-family: monospace; }
+
+/* COMMUN */
 .label { font-size: 9px; letter-spacing: 3px; color: rgba(238,234,228,0.35); font-family: monospace; margin-bottom: 8px; margin-top: 18px; }
 .row { display: flex; gap: 10px; }
 .tog { flex: 1; padding: 11px; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; background: transparent; color: rgba(238,234,228,0.45); font-size: 14px; cursor: pointer; font-family: inherit; }
 .tog.bl { border-color: #3d8ce0; background: rgba(61,140,224,0.12); color: #3d8ce0; }
 .tog.pu { border-color: #7b5ea7; background: rgba(123,94,167,0.12); color: #b39ddb; }
+.tog.gr { border-color: #2ecc71; background: rgba(46,204,113,0.12); color: #2ecc71; }
 input[type="text"] { width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; color: #eeeae4; font-size: 14px; outline: none; font-family: inherit; }
 .btn-gen { width: 100%; padding: 15px; background: linear-gradient(135deg,#0e3270,#3d8ce0); border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: bold; cursor: pointer; font-family: inherit; margin-top: 20px; }
 .btn-gen:disabled { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.2); cursor: default; }
+.btn-back { background: transparent; border: none; color: rgba(238,234,228,0.4); font-size: 13px; cursor: pointer; padding: 8px 0; font-family: inherit; margin-bottom: 16px; }
 .err { margin-top: 16px; padding: 12px; border-radius: 10px; background: rgba(200,50,50,0.1); border: 1px solid rgba(200,50,50,0.3); color: #ff8a8a; font-size: 12px; display: none; }
+
+/* PHOTOS */
+.photo-zone { border-radius: 14px; border: 1.5px dashed rgba(61,140,224,0.4); margin-bottom: 12px; min-height: 160px; display: flex; align-items: center; justify-content: center; background: #0d1e38; cursor: pointer; overflow: hidden; position: relative; }
+.photo-grid { display: grid; gap: 4px; width: 100%; }
+.photo-grid img { width: 100%; object-fit: cover; display: block; border-radius: 4px; }
+.photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 30px; text-align: center; }
+.photo-btns { display: flex; gap: 10px; margin-bottom: 16px; }
+.photo-btn { flex: 1; padding: 11px; border: 1.5px solid rgba(61,140,224,0.4); border-radius: 10px; background: rgba(61,140,224,0.08); color: #3d8ce0; font-size: 12px; cursor: pointer; font-family: inherit; text-align: center; }
+.photo-count { font-size: 11px; color: rgba(238,234,228,0.4); text-align: center; margin-bottom: 8px; font-family: monospace; }
+
+/* TEMPLATES GRAPHIQUES */
+.templates { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tpl { border-radius: 12px; padding: 20px 14px; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.08); text-align: center; transition: all 0.2s; }
+.tpl:hover { border-color: #3d8ce0; }
+.tpl.sel { border-color: #3d8ce0; background: rgba(61,140,224,0.08); }
+.tpl-icon { font-size: 28px; margin-bottom: 8px; }
+.tpl-name { font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+.tpl-desc { font-size: 10px; color: rgba(238,234,228,0.4); }
+.format-row { display: flex; gap: 10px; margin-bottom: 8px; }
+.fmt-btn { flex: 1; padding: 10px; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; background: transparent; color: rgba(238,234,228,0.45); font-size: 12px; cursor: pointer; font-family: inherit; text-align: center; }
+.fmt-btn.sel { border-color: #2ecc71; background: rgba(46,204,113,0.08); color: #2ecc71; }
+
+/* LOADING */
 .loading { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 18px; }
 .spinner { width: 50px; height: 50px; border-radius: 50%; border: 3px solid rgba(61,140,224,0.12); border-top: 3px solid #3d8ce0; animation: spin 0.9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* RÉSULTATS */
 .res { display: none; padding: 20px; }
 .preview-wrap { position: relative; margin-bottom: 16px; border-radius: 14px; overflow: hidden; }
 .preview-wrap img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
-.preview-wrap .overlay-title { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 14px; font-weight: bold; }
+.carousel-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.dot.on { background: #3d8ce0; }
+.overlay-title { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 14px; font-weight: bold; }
+.graphic-preview { border-radius: 14px; margin-bottom: 16px; padding: 40px 20px; text-align: center; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
 .aibox { padding: 14px; border-radius: 12px; margin-bottom: 20px; background: rgba(123,94,167,0.08); border: 1px solid rgba(123,94,167,0.2); display: none; }
 .ailbl { font-size: 9px; letter-spacing: 2px; color: #b39ddb; font-family: monospace; margin-bottom: 6px; }
 .seclbl { font-size: 9px; letter-spacing: 2px; color: #3d8ce0; font-family: monospace; margin-bottom: 10px; }
 .cap { padding: 13px 15px; margin-bottom: 9px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.07); font-size: 13px; line-height: 1.6; cursor: pointer; color: rgba(238,234,228,0.45); }
 .cap.on { border-color: #3d8ce0; background: rgba(61,140,224,0.07); color: #eeeae4; }
 .share-btns { display: flex; gap: 10px; margin-bottom: 10px; }
-.share-btn { flex: 1; padding: 13px; border: none; border-radius: 12px; color: #fff; font-size: 13px; font-weight: bold; cursor: pointer; font-family: inherit; text-align: center; }
+.share-btn { flex: 1; padding: 13px; border: none; border-radius: 12px; color: #fff; font-size: 13px; font-weight: bold; cursor: pointer; font-family: inherit; }
 .share-ig { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
 .share-li { background: #0077b5; }
-.btn-save { width: 100%; padding: 13px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; color: #eeeae4; font-size: 13px; font-weight: bold; cursor: pointer; font-family: inherit; margin-bottom: 10px; }
+.btn-save { width: 100%; padding: 13px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; color: #eeeae4; font-size: 13px; cursor: pointer; font-family: inherit; margin-bottom: 10px; }
 .btn-reset { width: 100%; padding: 11px; background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: rgba(238,234,228,0.4); font-size: 13px; cursor: pointer; font-family: inherit; }
 input[type="file"] { display: none; }
 </style>
@@ -56,56 +93,149 @@ input[type="file"] { display: none; }
   <h1>Posto <span>&times;</span> BDLIM</h1>
 </div>
 
-<input type="file" id="fileinput" accept="image/*" onchange="onPhoto(event)" />
-<input type="file" id="camerainput" accept="image/*" capture="environment" onchange="onPhoto(event)" />
+<input type="file" id="fileinput" accept="image/*" multiple onchange="onPhotos(event)" />
+<input type="file" id="camerainput" accept="image/*" capture="environment" onchange="onPhotos(event)" />
 
-<div id="pg1" class="content">
+<!-- PAGE 0 : ACCUEIL -->
+<div id="pg0" class="welcome">
+  <div class="welcome-title">Cr&eacute;e ton contenu</div>
+  <div class="welcome-sub">Choisis comment tu veux commencer ton post</div>
 
-  <div class="photo-zone" onclick="document.getElementById('fileinput').click()">
-    <img id="photopreview" src="" alt="photo" />
+  <div class="choice-card" onclick="goPhotos()">
+    <div class="choice-icon">&#128247;</div>
+    <div class="choice-title">Mes photos</div>
+    <div class="choice-desc">Importe une ou plusieurs photos depuis ta galerie ou prends une photo directement.</div>
+    <span class="choice-badge">Photo unique &bull; Carrousel</span>
+  </div>
+
+  <div class="choice-card" onclick="goGraphic()">
+    <div class="choice-icon">&#127912;</div>
+    <div class="choice-title">Visuel graphique</div>
+    <div class="choice-desc">Cr&eacute;e un visuel &agrave; partir de mod&egrave;les. Id&eacute;al pour les promos, annonces et citations.</div>
+    <span class="choice-badge">Templates &bull; Carrousel</span>
+  </div>
+</div>
+
+<!-- PAGE 1A : PHOTOS -->
+<div id="pg1a" class="content" style="display:none">
+  <button class="btn-back" onclick="goHome()">&#8617; Retour</button>
+
+  <div class="photo-zone" id="photozone" onclick="document.getElementById('fileinput').click()">
+    <div id="photogrid" class="photo-grid" style="display:none"></div>
     <div class="photo-placeholder" id="photoplaceholder">
-      <div class="photo-icon">&#128247;</div>
-      <div class="photo-text">Appuie pour ajouter ta photo</div>
+      <div style="font-size:40px">&#128247;</div>
+      <div style="font-size:13px;color:rgba(238,234,228,0.5)">Appuie pour ajouter tes photos</div>
     </div>
   </div>
 
+  <div id="photocount" class="photo-count" style="display:none"></div>
+
   <div class="photo-btns">
-    <button class="photo-btn" onclick="document.getElementById('camerainput').click()">&#128248; Prendre une photo</button>
+    <button class="photo-btn" onclick="document.getElementById('camerainput').click()">&#128248; Photo</button>
     <button class="photo-btn" onclick="document.getElementById('fileinput').click()">&#128444; Galerie</button>
+    <button class="photo-btn" onclick="clearPhotos()">&#128465; Vider</button>
   </div>
 
   <div class="label">CALL TO ACTION</div>
   <div class="row">
-    <button class="tog" id="c1" onclick="pick(1,'Oui')">Oui</button>
-    <button class="tog" id="c2" onclick="pick(1,'Non')">Non</button>
+    <button class="tog" id="pc1" onclick="pick('cta','Oui')">Oui</button>
+    <button class="tog" id="pc2" onclick="pick('cta','Non')">Non</button>
   </div>
 
   <div class="label">CE QUE TU VEUX METTRE EN AVANT</div>
-  <input type="text" id="hl" oninput="chk()" placeholder="ex : 100 ans d'histoire, savoir-faire..." />
+  <input type="text" id="phl" oninput="chk()" placeholder="ex : 100 ans d'histoire, savoir-faire..." />
 
   <div class="label">TON TITRE</div>
-  <input type="text" id="ti" oninput="chk()" placeholder="ex : Depuis 1916, on lave plus blanc !" />
+  <input type="text" id="pti" oninput="chk()" placeholder="ex : Depuis 1916, on lave plus blanc !" />
 
   <div class="label">L'IA AM&Eacute;LIORE TON TITRE ?</div>
   <div class="row">
-    <button class="tog" id="a1" onclick="pick(2,'Oui')">Oui</button>
-    <button class="tog" id="a2" onclick="pick(2,'Non')">Non</button>
+    <button class="tog" id="pa1" onclick="pick('ai','Oui')">Oui</button>
+    <button class="tog" id="pa2" onclick="pick('ai','Non')">Non</button>
   </div>
 
-  <div id="errmsg" class="err"></div>
-  <button id="genbtn" class="btn-gen" onclick="gen()" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
+  <div id="perr" class="err"></div>
+  <button id="pgenbtn" class="btn-gen" onclick="gen()" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
 </div>
 
+<!-- PAGE 1B : VISUEL GRAPHIQUE -->
+<div id="pg1b" class="content" style="display:none">
+  <button class="btn-back" onclick="goHome()">&#8617; Retour</button>
+
+  <div class="label">CHOISIS UN MOD&Egrave;LE</div>
+  <div class="templates">
+    <div class="tpl" id="tpl1" onclick="pickTpl('produit')">
+      <div class="tpl-icon">&#128230;</div>
+      <div class="tpl-name">Produit</div>
+      <div class="tpl-desc">Mise en avant d'un article</div>
+    </div>
+    <div class="tpl" id="tpl2" onclick="pickTpl('promo')">
+      <div class="tpl-icon">&#127991;</div>
+      <div class="tpl-name">Promotion</div>
+      <div class="tpl-desc">Offre, r&eacute;duction</div>
+    </div>
+    <div class="tpl" id="tpl3" onclick="pickTpl('fierte')">
+      <div class="tpl-icon">&#127942;</div>
+      <div class="tpl-name">Fiert&eacute;</div>
+      <div class="tpl-desc">Histoire, valeurs</div>
+    </div>
+    <div class="tpl" id="tpl4" onclick="pickTpl('conseil')">
+      <div class="tpl-icon">&#128161;</div>
+      <div class="tpl-name">Conseil</div>
+      <div class="tpl-desc">Astuce utile</div>
+    </div>
+  </div>
+
+  <div class="label">FORMAT</div>
+  <div class="format-row">
+    <button class="fmt-btn" id="fmt1" onclick="pickFmt(1)">&#9654; 1 image</button>
+    <button class="fmt-btn" id="fmt2" onclick="pickFmt(2)">&#9654; Carrousel x2</button>
+    <button class="fmt-btn" id="fmt3" onclick="pickFmt(3)">&#9654; Carrousel x3</button>
+  </div>
+
+  <div class="label">CE QUE TU VEUX METTRE EN AVANT</div>
+  <input type="text" id="ghl" oninput="chk()" placeholder="ex : nouvelle offre, conseil du mois..." />
+
+  <div class="label">TON TITRE</div>
+  <input type="text" id="gti" oninput="chk()" placeholder="ex : Ce mois-ci, profitez de -20% !" />
+
+  <div class="label">L'IA AM&Eacute;LIORE TON TITRE ?</div>
+  <div class="row">
+    <button class="tog" id="ga1" onclick="pick('gai','Oui')">Oui</button>
+    <button class="tog" id="ga2" onclick="pick('gai','Non')">Non</button>
+  </div>
+
+  <div class="label">CALL TO ACTION</div>
+  <div class="row">
+    <button class="tog" id="gc1" onclick="pick('gcta','Oui')">Oui</button>
+    <button class="tog" id="gc2" onclick="pick('gcta','Non')">Non</button>
+  </div>
+
+  <div id="gerr" class="err"></div>
+  <button id="ggenbtn" class="btn-gen" onclick="genGraphic()" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
+</div>
+
+<!-- PAGE 2 : LOADING -->
 <div id="pg2" class="loading">
   <div class="spinner"></div>
   <div style="font-size:15px;font-weight:bold">G&eacute;n&eacute;ration en cours...</div>
   <div style="font-size:12px;color:rgba(238,234,232,0.3)">L'IA cr&eacute;e ton contenu</div>
 </div>
 
+<!-- PAGE 3 : RÉSULTATS -->
 <div id="pg3" class="res">
-  <div class="preview-wrap" id="previewwrap" style="display:none">
-    <img id="resphoto" src="" alt="photo" />
-    <div class="overlay-title" id="overlaytitle"></div>
+  <div id="previewwrap" style="display:none">
+    <div class="preview-wrap">
+      <img id="resphoto" src="" alt="photo" />
+      <div class="overlay-title" id="overlaytitle"></div>
+    </div>
+    <div class="carousel-dots" id="carouseldots"></div>
+  </div>
+
+  <div id="graphicpreview" class="graphic-preview" style="display:none">
+    <div id="gpicon" style="font-size:48px"></div>
+    <div id="gptitle" style="font-size:18px;font-weight:bold"></div>
+    <div id="gpsubtitle" style="font-size:12px;opacity:0.6"></div>
   </div>
 
   <div id="aibox" class="aibox">
@@ -121,156 +251,257 @@ input[type="file"] { display: none; }
     <button class="share-btn share-ig" onclick="shareIG()">&#128247; Instagram</button>
     <button class="share-btn share-li" onclick="shareLI()">in LinkedIn</button>
   </div>
-
-  <button class="btn-save" onclick="savePhoto()">&#128190; Enregistrer la photo</button>
+  <button class="btn-save" onclick="savePhoto()">&#128190; Enregistrer</button>
   <button class="btn-reset" onclick="raz()">&#8617; Nouveau post</button>
 </div>
 
 <script>
-var vcta = null;
-var vai = null;
-var photoData = null;
+var mode = 'photo';
+var vcta = null, vai = null, vgcta = null, vgai = null;
+var vtpl = null, vfmt = 1;
+var photos = [];
 var selectedCaption = '';
 
-function onPhoto(e) {
-  var file = e.target.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    photoData = ev.target.result;
-    document.getElementById('photopreview').src = photoData;
-    document.getElementById('photopreview').style.display = 'block';
-    document.getElementById('photoplaceholder').style.display = 'none';
-  };
-  reader.readAsDataURL(file);
+var tplColors = {
+  produit: { bg: 'linear-gradient(135deg,#0d2b5e,#1a5276)', icon: '&#128230;' },
+  promo:   { bg: 'linear-gradient(135deg,#7d0000,#c0392b)', icon: '&#127991;' },
+  fierte:  { bg: 'linear-gradient(135deg,#0d1e38,#2471a3)', icon: '&#127942;' },
+  conseil: { bg: 'linear-gradient(135deg,#1a3a1a,#27ae60)', icon: '&#128161;' }
+};
+
+function goHome() {
+  hide(['pg1a','pg1b','pg2','pg3']);
+  show('pg0');
+  raz();
+}
+function goPhotos() { mode='photo'; hide(['pg0']); show('pg1a'); }
+function goGraphic() { mode='graphic'; hide(['pg0']); show('pg1b'); }
+
+function show(id) { document.getElementById(id).style.display = ''; }
+function hide(ids) { ids.forEach(function(id){ document.getElementById(id).style.display='none'; }); }
+
+function onPhotos(e) {
+  var files = Array.from(e.target.files);
+  files.forEach(function(f) {
+    var r = new FileReader();
+    r.onload = function(ev) {
+      photos.push(ev.target.result);
+      renderPhotos();
+    };
+    r.readAsDataURL(f);
+  });
 }
 
-function pick(g, v) {
-  if (g === 1) {
-    vcta = v;
-    document.getElementById('c1').className = 'tog' + (v === 'Oui' ? ' bl' : '');
-    document.getElementById('c2').className = 'tog' + (v === 'Non' ? ' bl' : '');
+function renderPhotos() {
+  if (photos.length === 0) return;
+  var grid = document.getElementById('photogrid');
+  document.getElementById('photoplaceholder').style.display = 'none';
+  grid.style.display = 'grid';
+  grid.innerHTML = '';
+  if (photos.length === 1) {
+    grid.style.gridTemplateColumns = '1fr';
+    var img = document.createElement('img');
+    img.src = photos[0]; img.style.height = '200px';
+    grid.appendChild(img);
   } else {
-    vai = v;
-    document.getElementById('a1').className = 'tog' + (v === 'Oui' ? ' pu' : '');
-    document.getElementById('a2').className = 'tog' + (v === 'Non' ? ' pu' : '');
+    grid.style.gridTemplateColumns = '1fr 1fr';
+    photos.slice(0,4).forEach(function(p) {
+      var img = document.createElement('img');
+      img.src = p; img.style.height = '100px';
+      grid.appendChild(img);
+    });
   }
+  var cnt = document.getElementById('photocount');
+  cnt.style.display = 'block';
+  cnt.textContent = photos.length + ' photo' + (photos.length > 1 ? 's' : '') + (photos.length > 1 ? ' — Carrousel' : '');
+}
+
+function clearPhotos() {
+  photos = [];
+  document.getElementById('photogrid').style.display = 'none';
+  document.getElementById('photogrid').innerHTML = '';
+  document.getElementById('photoplaceholder').style.display = 'flex';
+  document.getElementById('photocount').style.display = 'none';
+}
+
+function pickTpl(t) {
+  vtpl = t;
+  ['tpl1','tpl2','tpl3','tpl4'].forEach(function(id){ document.getElementById(id).className='tpl'; });
+  var map = {produit:'tpl1',promo:'tpl2',fierte:'tpl3',conseil:'tpl4'};
+  if (map[t]) document.getElementById(map[t]).className = 'tpl sel';
+  chk();
+}
+
+function pickFmt(n) {
+  vfmt = n;
+  [1,2,3].forEach(function(i){ document.getElementById('fmt'+i).className='fmt-btn'; });
+  document.getElementById('fmt'+n).className = 'fmt-btn sel';
+}
+
+function pick(key, val) {
+  var map = {
+    cta:  ['pc1','pc2','bl'],
+    ai:   ['pa1','pa2','pu'],
+    gcta: ['gc1','gc2','bl'],
+    gai:  ['ga1','ga2','pu']
+  };
+  if (key==='cta') vcta=val;
+  else if (key==='ai') vai=val;
+  else if (key==='gcta') vgcta=val;
+  else if (key==='gai') vgai=val;
+  var ids = map[key];
+  document.getElementById(ids[0]).className = 'tog' + (val==='Oui' ? ' '+ids[2] : '');
+  document.getElementById(ids[1]).className = 'tog' + (val==='Non' ? ' '+ids[2] : '');
   chk();
 }
 
 function chk() {
-  var ok = vcta && vai && document.getElementById('hl').value.trim() && document.getElementById('ti').value.trim();
-  document.getElementById('genbtn').disabled = !ok;
+  if (mode==='photo') {
+    var ok = vcta && vai && document.getElementById('phl').value.trim() && document.getElementById('pti').value.trim();
+    document.getElementById('pgenbtn').disabled = !ok;
+  } else {
+    var ok2 = vtpl && vgcta && vgai && document.getElementById('ghl').value.trim() && document.getElementById('gti').value.trim();
+    document.getElementById('ggenbtn').disabled = !ok2;
+  }
+}
+
+function buildPrompt(hl, ti, cta, ai, tpl) {
+  var type = tpl || 'contenu';
+  return 'Tu es un expert en reseaux sociaux pour BDLIM, blanchisserie industrielle fondee en 1916.\n' +
+    'Type de post : ' + type + '.\n' +
+    'Titre : "' + ti + '"\n' +
+    'Mise en avant : "' + hl + '"\n' +
+    'CTA : ' + (cta==='Oui' ? 'Inclure un appel a laction' : 'Pas de CTA') + '\n\n' +
+    'REPONDS UNIQUEMENT dans ce format :\n' +
+    (ai==='Oui' ? 'NOUVEAU_TITRE: [titre max 8 mots]\n' : '') +
+    'CAPTION_1: [caption 2-3 phrases emojis]\n' +
+    'CAPTION_2: [caption differente 2-3 phrases emojis]\n' +
+    'CAPTION_3: [caption poetique 2-3 phrases emojis]';
 }
 
 function gen() {
-  var hl = document.getElementById('hl').value.trim();
-  var ti = document.getElementById('ti').value.trim();
-  document.getElementById('pg1').style.display = 'none';
-  document.getElementById('pg2').style.display = 'flex';
-  document.getElementById('errmsg').style.display = 'none';
+  var hl = document.getElementById('phl').value.trim();
+  var ti = document.getElementById('pti').value.trim();
+  hide(['pg1a']); show('pg2');
+  callAPI(buildPrompt(hl, ti, vcta, vai, null), ti, photos[0] || null);
+}
 
+function genGraphic() {
+  var hl = document.getElementById('ghl').value.trim();
+  var ti = document.getElementById('gti').value.trim();
+  hide(['pg1b']); show('pg2');
+  callAPI(buildPrompt(hl, ti, vgcta, vgai, vtpl), ti, null);
+}
+
+function callAPI(prompt, ti, photo) {
   fetch('https://posto-production-061c.up.railway.app/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cta: vcta, highlight: hl, title: ti, aiTitle: vai })
+    body: JSON.stringify({ cta: vcta||vgcta, highlight: prompt, title: ti, aiTitle: vai||vgai })
   })
-  .then(function(r) { return r.json(); })
-  .then(function(d) {
+  .then(function(r){ return r.json(); })
+  .then(function(d){
     var txt = d.text || '';
-    var nt = null;
-    var caps = [];
+    var nt = null, caps = [];
     var lines = txt.split('\n');
-    for (var i = 0; i < lines.length; i++) {
+    for (var i=0;i<lines.length;i++){
       var l = lines[i].trim();
-      if (l.indexOf('NOUVEAU_TITRE:') === 0) nt = l.replace('NOUVEAU_TITRE:', '').trim();
-      else if (l.indexOf('CAPTION_1:') === 0) caps[0] = l.replace('CAPTION_1:', '').trim();
-      else if (l.indexOf('CAPTION_2:') === 0) caps[1] = l.replace('CAPTION_2:', '').trim();
-      else if (l.indexOf('CAPTION_3:') === 0) caps[2] = l.replace('CAPTION_3:', '').trim();
+      if (l.indexOf('NOUVEAU_TITRE:')===0) nt = l.replace('NOUVEAU_TITRE:','').trim();
+      else if (l.indexOf('CAPTION_1:')===0) caps[0]=l.replace('CAPTION_1:','').trim();
+      else if (l.indexOf('CAPTION_2:')===0) caps[1]=l.replace('CAPTION_2:','').trim();
+      else if (l.indexOf('CAPTION_3:')===0) caps[2]=l.replace('CAPTION_3:','').trim();
     }
-    while (caps.length < 3) caps.push('BDLIM, depuis 1916.');
-    selectedCaption = caps[0] || '';
+    while(caps.length<3) caps.push('BDLIM, depuis 1916.');
+    selectedCaption = caps[0]||'';
 
-    if (photoData) {
-      document.getElementById('resphoto').src = photoData;
-      document.getElementById('previewwrap').style.display = 'block';
-      document.getElementById('overlaytitle').textContent = nt || document.getElementById('ti').value;
+    if (photo) {
+      document.getElementById('resphoto').src = photo;
+      document.getElementById('overlaytitle').textContent = nt||ti;
+      show('previewwrap');
+      if (photos.length > 1) {
+        var dots = document.getElementById('carouseldots');
+        dots.innerHTML = '';
+        photos.forEach(function(p,i){
+          var d = document.createElement('div');
+          d.className = 'dot' + (i===0?' on':'');
+          dots.appendChild(d);
+        });
+      }
+      hide(['graphicpreview']);
+    } else {
+      var tplData = tplColors[vtpl] || tplColors.fierte;
+      var gp = document.getElementById('graphicpreview');
+      gp.style.background = tplData.bg;
+      document.getElementById('gpicon').innerHTML = tplData.icon;
+      document.getElementById('gptitle').textContent = nt||ti;
+      document.getElementById('gpsubtitle').textContent = 'BDLIM \u00b7 SINCE 1916';
+      if (vfmt > 1) document.getElementById('gpsubtitle').textContent += ' \u2014 Carrousel x'+vfmt;
+      show('graphicpreview');
+      hide(['previewwrap']);
     }
 
     if (nt) {
-      document.getElementById('aibox').style.display = 'block';
+      show('aibox');
       document.getElementById('aitxt').textContent = nt;
-      document.getElementById('origtxt').textContent = 'Ton titre : ' + document.getElementById('ti').value;
+      document.getElementById('origtxt').textContent = 'Ton titre : ' + ti;
     }
 
     var cl = document.getElementById('capslist');
     cl.innerHTML = '';
-    for (var j = 0; j < 3; j++) {
+    for(var j=0;j<3;j++){
       var el = document.createElement('div');
-      el.className = 'cap' + (j === 0 ? ' on' : '');
-      el.textContent = caps[j] || '';
-      (function(e, c) {
-        e.onclick = function() {
-          var all = document.getElementsByClassName('cap');
-          for (var k = 0; k < all.length; k++) all[k].className = 'cap';
-          e.className = 'cap on';
-          selectedCaption = c;
-        };
-      })(el, caps[j]);
+      el.className = 'cap'+(j===0?' on':'');
+      el.textContent = caps[j]||'';
+      (function(e,c){ e.onclick=function(){
+        var all=document.getElementsByClassName('cap');
+        for(var k=0;k<all.length;k++) all[k].className='cap';
+        e.className='cap on'; selectedCaption=c;
+      }; })(el, caps[j]);
       cl.appendChild(el);
     }
 
-    document.getElementById('pg2').style.display = 'none';
-    document.getElementById('pg3').style.display = 'block';
+    hide(['pg2']); show('pg3');
   })
-  .catch(function(e) {
-    document.getElementById('pg2').style.display = 'none';
-    document.getElementById('pg1').style.display = 'block';
-    var em = document.getElementById('errmsg');
-    em.style.display = 'block';
-    em.textContent = 'Erreur : ' + e.message;
+  .catch(function(e){
+    hide(['pg2']);
+    if(mode==='photo') show('pg1a'); else show('pg1b');
+    var em = document.getElementById(mode==='photo'?'perr':'gerr');
+    em.style.display='block';
+    em.textContent='Erreur : '+e.message;
   });
 }
 
 function shareIG() {
-  var text = encodeURIComponent(selectedCaption);
-  window.open('https://www.instagram.com/', '_blank');
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(selectedCaption);
-    alert('Caption copiee ! Colle-la dans Instagram.');
-  }
+  if(navigator.clipboard) navigator.clipboard.writeText(selectedCaption);
+  window.open('https://www.instagram.com/','_blank');
+  alert('Caption copi\u00e9e ! Colle-la dans Instagram.');
 }
-
 function shareLI() {
-  var text = encodeURIComponent(selectedCaption);
-  var url = 'https://www.linkedin.com/sharing/share-offsite/?url=https://posto-production-061c.up.railway.app&summary=' + text;
-  window.open(url, '_blank');
+  var url='https://www.linkedin.com/sharing/share-offsite/?url=https://posto-production-061c.up.railway.app&summary='+encodeURIComponent(selectedCaption);
+  window.open(url,'_blank');
 }
-
 function savePhoto() {
-  if (!photoData) { alert('Pas de photo a enregistrer.'); return; }
-  var a = document.createElement('a');
-  a.href = photoData;
-  a.download = 'posto-bdlim.jpg';
-  a.click();
-  alert('Photo enregistree !');
+  if(!photos[0]){ alert('Pas de photo \u00e0 enregistrer.'); return; }
+  var a=document.createElement('a');
+  a.href=photos[0]; a.download='posto-bdlim.jpg'; a.click();
 }
 
 function raz() {
-  document.getElementById('pg3').style.display = 'none';
-  document.getElementById('pg1').style.display = 'block';
-  document.getElementById('aibox').style.display = 'none';
-  document.getElementById('previewwrap').style.display = 'none';
-  document.getElementById('photopreview').style.display = 'none';
-  document.getElementById('photoplaceholder').style.display = 'flex';
-  vcta = null; vai = null; photoData = null; selectedCaption = '';
-  document.getElementById('c1').className = 'tog';
-  document.getElementById('c2').className = 'tog';
-  document.getElementById('a1').className = 'tog';
-  document.getElementById('a2').className = 'tog';
-  document.getElementById('hl').value = '';
-  document.getElementById('ti').value = '';
-  document.getElementById('genbtn').disabled = true;
+  photos=[]; vcta=null; vai=null; vgcta=null; vgai=null; vtpl=null; vfmt=1; selectedCaption='';
+  ['pc1','pc2','pa1','pa2','gc1','gc2','ga1','ga2'].forEach(function(id){ var el=document.getElementById(id); if(el) el.className='tog'; });
+  ['tpl1','tpl2','tpl3','tpl4'].forEach(function(id){ var el=document.getElementById(id); if(el) el.className='tpl'; });
+  ['fmt1','fmt2','fmt3'].forEach(function(id){ var el=document.getElementById(id); if(el) el.className='fmt-btn'; });
+  ['phl','pti','ghl','gti'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('photogrid').style.display='none';
+  document.getElementById('photogrid').innerHTML='';
+  document.getElementById('photoplaceholder').style.display='flex';
+  document.getElementById('photocount').style.display='none';
+  document.getElementById('aibox').style.display='none';
+  document.getElementById('previewwrap').style.display='none';
+  document.getElementById('graphicpreview').style.display='none';
+  document.getElementById('carouseldots').innerHTML='';
+  if(document.getElementById('pgenbtn')) document.getElementById('pgenbtn').disabled=true;
+  if(document.getElementById('ggenbtn')) document.getElementById('ggenbtn').disabled=true;
 }
 </script>
 </body>
