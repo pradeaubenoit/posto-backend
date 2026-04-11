@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 app.post('/generate', async (req, res) => {
   const { cta, highlight, title, aiTitle } = req.body;
 
-  const prompt = `Tu es un expert en reseaux sociaux pour BDLIM, blanchisserie industrielle fondee en 1916.
+  const prompt = `Tu es un expert en reseaux sociaux pour un commercant. Adapte ton contenu au contexte fourni.
 
 Genere IMMEDIATEMENT 3 captions Instagram differentes pour ce post.
 Titre : "${title}"
