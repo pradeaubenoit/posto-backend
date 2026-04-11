@@ -3,102 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Posto</title>
+<title>Posto Studio</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #07080f; color: #eeeae4; font-family: Georgia, serif; max-width: 430px; margin: 0 auto; min-height: 100vh; }
-.header { padding: 16px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; background: #07080f; z-index: 10; }
-.sub { font-size: 10px; letter-spacing: 4px; color: #3d8ce0; font-family: monospace; margin-bottom: 2px; }
-h1 { font-size: 19px; font-weight: bold; }
-h1 span { color: #3d8ce0; }
-.content { padding: 20px; }
-.welcome { padding: 30px 20px; }
-.welcome-title { font-size: 22px; font-weight: bold; margin-bottom: 8px; }
-.welcome-sub { font-size: 13px; color: rgba(238,234,228,0.5); margin-bottom: 32px; line-height: 1.5; }
-.choice-card { border-radius: 16px; padding: 22px; margin-bottom: 14px; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); }
-.choice-card:active { border-color: #3d8ce0; background: rgba(61,140,224,0.06); }
-.choice-icon { font-size: 32px; margin-bottom: 10px; }
-.choice-title { font-size: 15px; font-weight: bold; margin-bottom: 5px; }
-.choice-desc { font-size: 12px; color: rgba(238,234,228,0.5); line-height: 1.5; }
-.choice-badge { display: inline-block; margin-top: 8px; font-size: 9px; padding: 3px 10px; border-radius: 10px; background: rgba(61,140,224,0.15); color: #3d8ce0; font-family: monospace; }
+
+/* HEADER */
+.header { padding: 14px 20px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; background: #07080f; z-index: 10; display: flex; justify-content: space-between; align-items: center; }
+.header-left .sub { font-size: 9px; letter-spacing: 4px; color: #3d8ce0; font-family: monospace; margin-bottom: 1px; }
+.header-left h1 { font-size: 17px; font-weight: bold; }
+
+/* BOTTOM NAV */
+.bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: #07080f; border-top: 1px solid rgba(255,255,255,0.06); display: flex; z-index: 10; }
+.nav-item { flex: 1; padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; border: none; background: transparent; color: rgba(238,234,228,0.35); font-size: 9px; font-family: monospace; letter-spacing: 1px; }
+.nav-item.on { color: #3d8ce0; }
+.nav-icon { font-size: 20px; }
+
+/* PAGES */
+.page { display: none; padding: 16px 16px 80px; }
+.page.on { display: block; }
+
+/* PAGE CRÉATION */
+.welcome-title { font-size: 20px; font-weight: bold; margin-bottom: 6px; }
+.welcome-sub { font-size: 12px; color: rgba(238,234,228,0.5); margin-bottom: 24px; line-height: 1.5; }
+.choice-card { border-radius: 14px; padding: 20px; margin-bottom: 12px; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); }
+.choice-icon { font-size: 28px; margin-bottom: 8px; }
+.choice-title { font-size: 14px; font-weight: bold; margin-bottom: 4px; }
+.choice-desc { font-size: 11px; color: rgba(238,234,228,0.5); line-height: 1.4; }
+.choice-badge { display: inline-block; margin-top: 6px; font-size: 9px; padding: 2px 8px; border-radius: 8px; background: rgba(61,140,224,0.15); color: #3d8ce0; font-family: monospace; }
 .choice-badge.green { background: rgba(46,204,113,0.15); color: #2ecc71; }
 .choice-badge.orange { background: rgba(230,126,34,0.15); color: #e67e22; }
-.label { font-size: 9px; letter-spacing: 3px; color: rgba(238,234,228,0.35); font-family: monospace; margin-bottom: 8px; margin-top: 18px; }
+
+/* FORMULAIRES */
+.label { font-size: 9px; letter-spacing: 3px; color: rgba(238,234,228,0.35); font-family: monospace; margin-bottom: 8px; margin-top: 16px; display: block; }
 .row { display: flex; gap: 10px; }
-.tog { flex: 1; padding: 11px; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; background: transparent; color: rgba(238,234,228,0.45); font-size: 14px; cursor: pointer; font-family: inherit; }
+.tog { flex: 1; padding: 10px; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; background: transparent; color: rgba(238,234,228,0.45); font-size: 13px; cursor: pointer; font-family: inherit; }
 .tog.bl { border-color: #3d8ce0; background: rgba(61,140,224,0.12); color: #3d8ce0; }
 .tog.pu { border-color: #7b5ea7; background: rgba(123,94,167,0.12); color: #b39ddb; }
-input[type="text"], textarea { width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; color: #eeeae4; font-size: 14px; outline: none; font-family: inherit; }
-textarea { min-height: 100px; resize: vertical; line-height: 1.5; }
-.btn-gen { width: 100%; padding: 15px; background: linear-gradient(135deg,#0e3270,#3d8ce0); border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: bold; cursor: pointer; font-family: inherit; margin-top: 20px; }
+input[type="text"] { width: 100%; padding: 11px 13px; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; color: #eeeae4; font-size: 13px; outline: none; font-family: inherit; }
+textarea { width: 100%; padding: 11px 13px; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; color: #eeeae4; font-size: 13px; outline: none; font-family: inherit; min-height: 90px; resize: vertical; line-height: 1.5; }
+.btn-gen { width: 100%; padding: 14px; background: linear-gradient(135deg,#0e3270,#3d8ce0); border: none; border-radius: 12px; color: #fff; font-size: 14px; font-weight: bold; cursor: pointer; font-family: inherit; margin-top: 18px; }
 .btn-gen:disabled { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.2); cursor: default; }
-.btn-back { background: transparent; border: none; color: rgba(238,234,228,0.4); font-size: 13px; cursor: pointer; padding: 8px 0; font-family: inherit; margin-bottom: 16px; }
-.btn-secondary { width: 100%; padding: 13px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: rgba(238,234,228,0.7); font-size: 13px; cursor: pointer; font-family: inherit; margin-top: 10px; }
-.err { margin-top: 16px; padding: 12px; border-radius: 10px; background: rgba(200,50,50,0.1); border: 1px solid rgba(200,50,50,0.3); color: #ff8a8a; font-size: 12px; display: none; }
-.success { margin-top: 16px; padding: 14px; border-radius: 10px; background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; font-size: 13px; display: none; text-align: center; }
+.btn-back { background: transparent; border: none; color: rgba(238,234,228,0.4); font-size: 12px; cursor: pointer; padding: 6px 0; font-family: inherit; margin-bottom: 14px; display: block; }
+.btn-secondary { width: 100%; padding: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: rgba(238,234,228,0.7); font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 10px; }
+.err { margin-top: 14px; padding: 11px; border-radius: 10px; background: rgba(200,50,50,0.1); border: 1px solid rgba(200,50,50,0.3); color: #ff8a8a; font-size: 12px; display: none; }
 
-/* MEDIA ZONE */
-.media-zone { border-radius: 14px; border: 1.5px dashed rgba(61,140,224,0.4); margin-bottom: 12px; min-height: 180px; display: flex; align-items: center; justify-content: center; background: #0d1e38; cursor: pointer; overflow: hidden; position: relative; }
-.media-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 30px; text-align: center; }
-.media-btns { display: flex; gap: 8px; margin-bottom: 16px; }
-.media-btn { flex: 1; padding: 10px 6px; border: 1.5px solid rgba(61,140,224,0.4); border-radius: 10px; background: rgba(61,140,224,0.08); color: #3d8ce0; font-size: 11px; cursor: pointer; font-family: inherit; text-align: center; }
-.media-count { font-size: 11px; color: rgba(238,234,228,0.4); text-align: center; margin-bottom: 8px; font-family: monospace; }
-.photo-grid { display: grid; gap: 4px; width: 100%; }
-.photo-grid img { width: 100%; object-fit: cover; display: block; border-radius: 4px; }
-video { width: 100%; max-height: 200px; display: block; border-radius: 14px; margin-bottom: 12px; }
-
-/* MONTAGE FORM */
-.montage-info { padding: 14px; border-radius: 12px; background: rgba(230,126,34,0.08); border: 1px solid rgba(230,126,34,0.2); margin-bottom: 16px; }
-.montage-info .title { font-size: 13px; font-weight: bold; color: #e67e22; margin-bottom: 6px; }
-.montage-info .desc { font-size: 12px; color: rgba(238,234,228,0.5); line-height: 1.5; }
-.price-tag { display: inline-block; margin-top: 8px; font-size: 14px; font-weight: bold; color: #e67e22; }
+/* MEDIA */
+.media-zone { border-radius: 12px; border: 1.5px dashed rgba(61,140,224,0.4); margin-bottom: 10px; min-height: 160px; display: flex; align-items: center; justify-content: center; background: #0d1e38; cursor: pointer; overflow: hidden; }
+.media-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px; text-align: center; }
+.media-btns { display: flex; gap: 8px; margin-bottom: 14px; }
+.media-btn { flex: 1; padding: 9px 6px; border: 1.5px solid rgba(61,140,224,0.4); border-radius: 10px; background: rgba(61,140,224,0.08); color: #3d8ce0; font-size: 11px; cursor: pointer; font-family: inherit; text-align: center; }
+.media-count { font-size: 10px; color: rgba(238,234,228,0.4); text-align: center; margin-bottom: 6px; font-family: monospace; }
+.photo-grid { display: grid; gap: 3px; width: 100%; }
+.photo-grid img { width: 100%; object-fit: cover; display: block; border-radius: 3px; }
+video { width: 100%; max-height: 180px; display: block; border-radius: 12px; margin-bottom: 10px; }
 
 /* TEMPLATES */
-.templates { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-.tpl { border-radius: 12px; padding: 18px 12px; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.08); text-align: center; }
+.templates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.tpl { border-radius: 10px; padding: 16px 10px; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.08); text-align: center; }
 .tpl.sel { border-color: #3d8ce0; background: rgba(61,140,224,0.08); }
-.tpl-icon { font-size: 26px; margin-bottom: 8px; }
-.tpl-name { font-size: 12px; font-weight: bold; margin-bottom: 3px; }
-.tpl-desc { font-size: 10px; color: rgba(238,234,228,0.4); }
-.format-row { display: flex; gap: 10px; margin-bottom: 8px; }
-.fmt-btn { flex: 1; padding: 10px; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; background: transparent; color: rgba(238,234,228,0.45); font-size: 11px; cursor: pointer; font-family: inherit; text-align: center; }
+.tpl-icon { font-size: 24px; margin-bottom: 6px; }
+.tpl-name { font-size: 11px; font-weight: bold; margin-bottom: 2px; }
+.tpl-desc { font-size: 9px; color: rgba(238,234,228,0.4); }
+.format-row { display: flex; gap: 8px; margin-bottom: 6px; }
+.fmt-btn { flex: 1; padding: 9px; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; background: transparent; color: rgba(238,234,228,0.45); font-size: 11px; cursor: pointer; font-family: inherit; }
 .fmt-btn.sel { border-color: #2ecc71; background: rgba(46,204,113,0.08); color: #2ecc71; }
 
+/* MONTAGE */
+.montage-info { padding: 12px; border-radius: 10px; background: rgba(230,126,34,0.08); border: 1px solid rgba(230,126,34,0.2); margin-bottom: 14px; }
+.montage-title { font-size: 12px; font-weight: bold; color: #e67e22; margin-bottom: 4px; }
+.montage-desc { font-size: 11px; color: rgba(238,234,228,0.5); line-height: 1.5; }
+.price-tag { font-size: 13px; font-weight: bold; color: #e67e22; margin-top: 6px; display: block; }
+
 /* LOADING */
-.loading { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 18px; }
-.spinner { width: 50px; height: 50px; border-radius: 50%; border: 3px solid rgba(61,140,224,0.12); border-top: 3px solid #3d8ce0; animation: spin 0.9s linear infinite; }
+.loading { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 16px; }
+.spinner { width: 46px; height: 46px; border-radius: 50%; border: 3px solid rgba(61,140,224,0.12); border-top: 3px solid #3d8ce0; animation: spin 0.9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* RÉSULTATS */
-.res { display: none; padding: 20px; }
-.preview-wrap { position: relative; margin-bottom: 16px; border-radius: 14px; overflow: hidden; }
-.preview-wrap img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
-.overlay-title { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 14px; font-weight: bold; }
-.carousel-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
-.dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.res-page { display: none; padding: 16px 16px 80px; }
+.preview-wrap { position: relative; margin-bottom: 14px; border-radius: 12px; overflow: hidden; }
+.preview-wrap img { width: 100%; max-height: 220px; object-fit: cover; display: block; }
+.overlay-title { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 14px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 13px; font-weight: bold; }
+.carousel-dots { display: flex; justify-content: center; gap: 5px; margin-top: 6px; margin-bottom: 14px; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.2); }
 .dot.on { background: #3d8ce0; }
-.graphic-preview { border-radius: 14px; margin-bottom: 16px; padding: 40px 20px; text-align: center; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
-.video-res { border-radius: 14px; margin-bottom: 16px; background: #0d1e38; padding: 20px; text-align: center; }
-.aibox { padding: 14px; border-radius: 12px; margin-bottom: 20px; background: rgba(123,94,167,0.08); border: 1px solid rgba(123,94,167,0.2); display: none; }
-.ailbl { font-size: 9px; letter-spacing: 2px; color: #b39ddb; font-family: monospace; margin-bottom: 6px; }
-.seclbl { font-size: 9px; letter-spacing: 2px; color: #3d8ce0; font-family: monospace; margin-bottom: 10px; }
-.cap { padding: 13px 15px; margin-bottom: 9px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.07); font-size: 13px; line-height: 1.6; cursor: pointer; color: rgba(238,234,228,0.45); }
+.graphic-preview { border-radius: 12px; margin-bottom: 14px; padding: 36px 16px; text-align: center; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.aibox { padding: 12px; border-radius: 10px; margin-bottom: 16px; background: rgba(123,94,167,0.08); border: 1px solid rgba(123,94,167,0.2); }
+.ailbl { font-size: 9px; letter-spacing: 2px; color: #b39ddb; font-family: monospace; margin-bottom: 5px; }
+.seclbl { font-size: 9px; letter-spacing: 2px; color: #3d8ce0; font-family: monospace; margin-bottom: 8px; }
+.cap { padding: 11px 13px; margin-bottom: 8px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.07); font-size: 12px; line-height: 1.6; cursor: pointer; color: rgba(238,234,228,0.45); }
 .cap.on { border-color: #3d8ce0; background: rgba(61,140,224,0.07); color: #eeeae4; }
-.share-btns { display: flex; gap: 10px; margin-bottom: 10px; }
-.share-btn { flex: 1; padding: 13px; border: none; border-radius: 12px; color: #fff; font-size: 13px; font-weight: bold; cursor: pointer; font-family: inherit; }
+.share-btns { display: flex; gap: 8px; margin-bottom: 8px; }
+.share-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; color: #fff; font-size: 12px; font-weight: bold; cursor: pointer; font-family: inherit; }
 .share-ig { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
 .share-li { background: #0077b5; }
-.btn-montage { width: 100%; padding: 13px; background: rgba(230,126,34,0.1); border: 1.5px solid rgba(230,126,34,0.3); border-radius: 12px; color: #e67e22; font-size: 13px; font-weight: bold; cursor: pointer; font-family: inherit; margin-bottom: 10px; }
-.btn-save { width: 100%; padding: 13px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; color: #eeeae4; font-size: 13px; cursor: pointer; font-family: inherit; margin-bottom: 10px; }
-.btn-reset { width: 100%; padding: 11px; background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: rgba(238,234,228,0.4); font-size: 13px; cursor: pointer; font-family: inherit; }
+.btn-save { width: 100%; padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; color: #eeeae4; font-size: 12px; cursor: pointer; font-family: inherit; margin-bottom: 8px; }
+.btn-reset { width: 100%; padding: 10px; background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: rgba(238,234,228,0.4); font-size: 12px; cursor: pointer; font-family: inherit; }
+
+/* FEED */
+.feed-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.feed-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg,#0d2b5e,#3d8ce0); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.feed-name { font-size: 14px; font-weight: bold; }
+.feed-bio { font-size: 11px; color: rgba(238,234,228,0.5); margin-top: 2px; }
+.feed-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+.feed-item { aspect-ratio: 1; background: #0d1e38; position: relative; overflow: hidden; cursor: pointer; }
+.feed-item img { width: 100%; height: 100%; object-fit: cover; }
+.feed-item .feed-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.feed-item .feed-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.feed-item:hover .feed-overlay { background: rgba(0,0,0,0.4); }
+.feed-empty { grid-column: 1/-1; text-align: center; padding: 40px 20px; color: rgba(238,234,228,0.3); font-size: 13px; }
+.feed-new-btn { width: 100%; padding: 13px; background: linear-gradient(135deg,#0e3270,#3d8ce0); border: none; border-radius: 12px; color: #fff; font-size: 13px; font-weight: bold; cursor: pointer; font-family: inherit; margin-bottom: 16px; }
+
+/* IDÉES */
+.idea-card { border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); cursor: pointer; }
+.idea-card:active { border-color: #3d8ce0; }
+.idea-tag { font-size: 9px; padding: 2px 8px; border-radius: 8px; font-family: monospace; display: inline-block; margin-bottom: 8px; }
+.idea-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; }
+.idea-desc { font-size: 11px; color: rgba(238,234,228,0.5); line-height: 1.5; }
+.week-label { font-size: 10px; letter-spacing: 3px; color: #3d8ce0; font-family: monospace; margin-bottom: 12px; margin-top: 4px; }
+
+/* CONTACT */
+.contact-option { border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); cursor: pointer; display: flex; align-items: center; gap: 14px; }
+.contact-icon { font-size: 28px; flex-shrink: 0; }
+.contact-title { font-size: 13px; font-weight: bold; margin-bottom: 3px; }
+.contact-desc { font-size: 11px; color: rgba(238,234,228,0.5); }
+.contact-price { font-size: 12px; color: #e67e22; margin-top: 3px; font-weight: bold; }
+.contact-form { display: none; padding: 16px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.06); }
+.success-msg { padding: 12px; border-radius: 10px; background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; font-size: 12px; text-align: center; display: none; margin-top: 10px; }
+
 input[type="file"] { display: none; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="sub">CM AUGMENTÉ</div>
-  <h1>Posto Studio</h1>
+  <div class="header-left">
+    <div class="sub">CM AUGMENT&Eacute;</div>
+    <h1>Posto Studio</h1>
+  </div>
+  <div style="font-size:11px;color:rgba(238,234,228,0.3);font-family:monospace" id="headerInfo"></div>
 </div>
 
 <input type="file" id="fileinput" accept="image/*" multiple onchange="onPhotos(event)" />
@@ -106,219 +150,169 @@ input[type="file"] { display: none; }
 <input type="file" id="videoinput" accept="video/*" onchange="onVideo(event)" />
 <input type="file" id="videocamera" accept="video/*" capture="environment" onchange="onVideo(event)" />
 
-<!-- PAGE 0 : ACCUEIL -->
-<div id="pg0" class="welcome">
-  <div class="welcome-title">Cr&eacute;e ton contenu</div>
-  <div class="welcome-sub">Choisis comment tu veux commencer</div>
-
-  <div class="choice-card" onclick="goPhotos()">
-    <div class="choice-icon">&#128247;</div>
-    <div class="choice-title">Mes photos</div>
-    <div class="choice-desc">Importe une ou plusieurs photos depuis ta galerie ou prends une photo.</div>
-    <span class="choice-badge">Photo &bull; Carrousel</span>
+<!-- PAGE CRÉATION -->
+<div id="page-creation" class="page on">
+  <div id="sub-home">
+    <div class="welcome-title">Cr&eacute;e ton contenu</div>
+    <div class="welcome-sub">Choisis comment tu veux commencer</div>
+    <div class="choice-card" onclick="goSub('photos')">
+      <div class="choice-icon">&#128247;</div>
+      <div class="choice-title">Mes photos</div>
+      <div class="choice-desc">Importe une ou plusieurs photos depuis ta galerie.</div>
+      <span class="choice-badge">Photo &bull; Carrousel</span>
+    </div>
+    <div class="choice-card" onclick="goSub('video')">
+      <div class="choice-icon">&#127916;</div>
+      <div class="choice-title">Ma vid&eacute;o</div>
+      <div class="choice-desc">Importe ta vid&eacute;o. Option montage professionnel.</div>
+      <span class="choice-badge green">Vid&eacute;o &bull; Reels</span>
+      <span class="choice-badge orange" style="margin-left:6px">Montage 50&euro;</span>
+    </div>
+    <div class="choice-card" onclick="goSub('graphique')">
+      <div class="choice-icon">&#127912;</div>
+      <div class="choice-title">Visuel graphique</div>
+      <div class="choice-desc">Cr&eacute;e un visuel &agrave; partir de mod&egrave;les.</div>
+      <span class="choice-badge">Templates &bull; Carrousel</span>
+    </div>
   </div>
 
-  <div class="choice-card" onclick="goVideo()">
-    <div class="choice-icon">&#127916;</div>
-    <div class="choice-title">Ma vid&eacute;o</div>
-    <div class="choice-desc">Importe ta vid&eacute;o. L'IA g&eacute;n&egrave;re la caption. Option montage professionnel disponible.</div>
-    <span class="choice-badge green">Vid&eacute;o &bull; Reels</span>
-    <span class="choice-badge orange" style="margin-left:6px">Montage 50&euro;</span>
+  <!-- PHOTOS -->
+  <div id="sub-photos" style="display:none">
+    <button class="btn-back" onclick="goSub('home')">&#8617; Retour</button>
+    <div class="media-zone" id="photozone" onclick="document.getElementById('fileinput').click()">
+      <div id="photogrid" class="photo-grid" style="display:none"></div>
+      <div class="media-placeholder" id="photoplaceholder">
+        <div style="font-size:36px">&#128247;</div>
+        <div style="font-size:12px;color:rgba(238,234,228,0.5)">Appuie pour ajouter tes photos</div>
+      </div>
+    </div>
+    <div id="photocount" class="media-count" style="display:none"></div>
+    <div class="media-btns">
+      <button class="media-btn" onclick="document.getElementById('camerainput').click()">&#128248; Photo</button>
+      <button class="media-btn" onclick="document.getElementById('fileinput').click()">&#128444; Galerie</button>
+      <button class="media-btn" onclick="clearPhotos()">&#128465; Vider</button>
+    </div>
+    <span class="label">CALL TO ACTION</span>
+    <div class="row"><button class="tog" id="pc1" onclick="pick('cta','Oui')">Oui</button><button class="tog" id="pc2" onclick="pick('cta','Non')">Non</button></div>
+    <span class="label">CE QUE TU VEUX METTRE EN AVANT</span>
+    <input type="text" id="phl" oninput="chk()" placeholder="ex : nouveau produit, &eacute;v&eacute;nement..." />
+    <span class="label">TON TITRE</span>
+    <input type="text" id="pti" oninput="chk()" placeholder="ex : D&eacute;couvrez notre nouveaut&eacute; !" />
+    <span class="label">L'IA AM&Eacute;LIORE TON TITRE ?</span>
+    <div class="row"><button class="tog" id="pa1" onclick="pick('ai','Oui')">Oui</button><button class="tog" id="pa2" onclick="pick('ai','Non')">Non</button></div>
+    <div id="perr" class="err"></div>
+    <button id="pgenbtn" class="btn-gen" onclick="gen('photo')" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
   </div>
 
-  <div class="choice-card" onclick="goGraphic()">
-    <div class="choice-icon">&#127912;</div>
-    <div class="choice-title">Visuel graphique</div>
-    <div class="choice-desc">Cr&eacute;e un visuel &agrave; partir de mod&egrave;les. Id&eacute;al pour promos et annonces.</div>
-    <span class="choice-badge">Templates &bull; Carrousel</span>
+  <!-- VIDÉO -->
+  <div id="sub-video" style="display:none">
+    <button class="btn-back" onclick="goSub('home')">&#8617; Retour</button>
+    <div id="videopreview" style="display:none"><video id="videoplayer" controls></video></div>
+    <div class="media-zone" id="videozone" onclick="document.getElementById('videoinput').click()">
+      <div class="media-placeholder"><div style="font-size:36px">&#127916;</div><div style="font-size:12px;color:rgba(238,234,228,0.5)">Appuie pour importer ta vid&eacute;o</div></div>
+    </div>
+    <div class="media-btns">
+      <button class="media-btn" onclick="document.getElementById('videocamera').click()">&#127916; Filmer</button>
+      <button class="media-btn" onclick="document.getElementById('videoinput').click()">&#128444; Galerie</button>
+      <button class="media-btn" onclick="clearVideo()">&#128465; Vider</button>
+    </div>
+    <div class="montage-info">
+      <div class="montage-title">&#127916; Service montage professionnel</div>
+      <div class="montage-desc">Musique &bull; Sous-titres &bull; Transitions &bull; Format Reel<br>R&eacute;ponse sous 24h</div>
+      <span class="price-tag">50&euro; le montage</span>
+    </div>
+    <span class="label">CALL TO ACTION</span>
+    <div class="row"><button class="tog" id="vc1" onclick="pick('vcta','Oui')">Oui</button><button class="tog" id="vc2" onclick="pick('vcta','Non')">Non</button></div>
+    <span class="label">DE QUOI PARLE TA VID&Eacute;O ?</span>
+    <input type="text" id="vhl" oninput="chk()" placeholder="ex : visite atelier, nouveau service..." />
+    <span class="label">TON TITRE</span>
+    <input type="text" id="vti" oninput="chk()" placeholder="ex : Dans les coulisses !" />
+    <span class="label">L'IA AM&Eacute;LIORE TON TITRE ?</span>
+    <div class="row"><button class="tog" id="va1" onclick="pick('vai','Oui')">Oui</button><button class="tog" id="va2" onclick="pick('vai','Non')">Non</button></div>
+    <div id="verr" class="err"></div>
+    <button id="vgenbtn" class="btn-gen" onclick="gen('video')" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
+    <button class="btn-secondary" onclick="goSub('montage')">&#127916; Demander un montage (50&euro;)</button>
+  </div>
+
+  <!-- MONTAGE -->
+  <div id="sub-montage" style="display:none">
+    <button class="btn-back" onclick="goSub('video')">&#8617; Retour</button>
+    <div class="montage-info">
+      <div class="montage-title">&#127916; Montage professionnel — 50&euro;</div>
+      <div class="montage-desc">Musique &bull; Sous-titres &bull; Transitions &bull; Reel<br>R&eacute;ponse sous 24h garantie</div>
+    </div>
+    <span class="label">TON NOM</span>
+    <input type="text" id="mname" placeholder="Pr&eacute;nom Nom" />
+    <span class="label">TON EMAIL</span>
+    <input type="text" id="memail" placeholder="email@exemple.fr" />
+    <span class="label">D&Eacute;CRIS TA VID&Eacute;O</span>
+    <textarea id="mdesc" placeholder="Ex : vid&eacute;o 30s de notre atelier, musique dynamique, sous-titres..."></textarea>
+    <span class="label">STYLE SOUHAIT&Eacute;</span>
+    <div class="row">
+      <button class="tog" id="ms1" onclick="pickStyle('dynamique')">Dynamique</button>
+      <button class="tog" id="ms2" onclick="pickStyle('chaleureux')">Chaleureux</button>
+      <button class="tog" id="ms3" onclick="pickStyle('pro')">Pro</button>
+    </div>
+    <div id="msuccess" class="success-msg">&#10003; Demande envoy&eacute;e ! On te contacte sous 24h.</div>
+    <button class="btn-gen" style="background:linear-gradient(135deg,#8b4513,#e67e22)" onclick="sendMontage()">&#127916; Envoyer ma demande</button>
+  </div>
+
+  <!-- GRAPHIQUE -->
+  <div id="sub-graphique" style="display:none">
+    <button class="btn-back" onclick="goSub('home')">&#8617; Retour</button>
+    <span class="label">CHOISIS UN MOD&Egrave;LE</span>
+    <div class="templates">
+      <div class="tpl" id="tpl1" onclick="pickTpl('produit')"><div class="tpl-icon">&#128230;</div><div class="tpl-name">Produit</div><div class="tpl-desc">Mise en avant</div></div>
+      <div class="tpl" id="tpl2" onclick="pickTpl('promo')"><div class="tpl-icon">&#127991;</div><div class="tpl-name">Promotion</div><div class="tpl-desc">Offre, r&eacute;duction</div></div>
+      <div class="tpl" id="tpl3" onclick="pickTpl('fierte')"><div class="tpl-icon">&#127942;</div><div class="tpl-name">Fiert&eacute;</div><div class="tpl-desc">Histoire, valeurs</div></div>
+      <div class="tpl" id="tpl4" onclick="pickTpl('conseil')"><div class="tpl-icon">&#128161;</div><div class="tpl-name">Conseil</div><div class="tpl-desc">Astuce utile</div></div>
+    </div>
+    <span class="label">FORMAT</span>
+    <div class="format-row">
+      <button class="fmt-btn" id="fmt1" onclick="pickFmt(1)">1 image</button>
+      <button class="fmt-btn" id="fmt2" onclick="pickFmt(2)">Carrousel x2</button>
+      <button class="fmt-btn" id="fmt3" onclick="pickFmt(3)">Carrousel x3</button>
+    </div>
+    <span class="label">CE QUE TU VEUX METTRE EN AVANT</span>
+    <input type="text" id="ghl" oninput="chk()" placeholder="ex : nouvelle offre, conseil..." />
+    <span class="label">TON TITRE</span>
+    <input type="text" id="gti" oninput="chk()" placeholder="ex : Ce mois-ci, profitez de -20% !" />
+    <span class="label">L'IA AM&Eacute;LIORE TON TITRE ?</span>
+    <div class="row"><button class="tog" id="ga1" onclick="pick('gai','Oui')">Oui</button><button class="tog" id="ga2" onclick="pick('gai','Non')">Non</button></div>
+    <span class="label">CALL TO ACTION</span>
+    <div class="row"><button class="tog" id="gc1" onclick="pick('gcta','Oui')">Oui</button><button class="tog" id="gc2" onclick="pick('gcta','Non')">Non</button></div>
+    <div id="gerr" class="err"></div>
+    <button id="ggenbtn" class="btn-gen" onclick="gen('graphic')" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
   </div>
 </div>
 
-<!-- PAGE 1A : PHOTOS -->
-<div id="pg1a" class="content" style="display:none">
-  <button class="btn-back" onclick="goHome()">&#8617; Retour</button>
-
-  <div class="media-zone" id="photozone" onclick="document.getElementById('fileinput').click()">
-    <div id="photogrid" class="photo-grid" style="display:none"></div>
-    <div class="media-placeholder" id="photoplaceholder">
-      <div style="font-size:40px">&#128247;</div>
-      <div style="font-size:13px;color:rgba(238,234,228,0.5)">Appuie pour ajouter tes photos</div>
-    </div>
-  </div>
-  <div id="photocount" class="media-count" style="display:none"></div>
-  <div class="media-btns">
-    <button class="media-btn" onclick="document.getElementById('camerainput').click()">&#128248; Photo</button>
-    <button class="media-btn" onclick="document.getElementById('fileinput').click()">&#128444; Galerie</button>
-    <button class="media-btn" onclick="clearPhotos()">&#128465; Vider</button>
-  </div>
-
-  <div class="label">CALL TO ACTION</div>
-  <div class="row">
-    <button class="tog" id="pc1" onclick="pick('cta','Oui')">Oui</button>
-    <button class="tog" id="pc2" onclick="pick('cta','Non')">Non</button>
-  </div>
-  <div class="label">CE QUE TU VEUX METTRE EN AVANT</div>
-  <input type="text" id="phl" oninput="chk()" placeholder="ex : 100 ans d'histoire..." />
-  <div class="label">TON TITRE</div>
-  <input type="text" id="pti" oninput="chk()" placeholder="ex : Depuis 1916, on lave plus blanc !" />
-  <div class="label">L'IA AM&Eacute;LIORE TON TITRE ?</div>
-  <div class="row">
-    <button class="tog" id="pa1" onclick="pick('ai','Oui')">Oui</button>
-    <button class="tog" id="pa2" onclick="pick('ai','Non')">Non</button>
-  </div>
-  <div id="perr" class="err"></div>
-  <button id="pgenbtn" class="btn-gen" onclick="gen('photo')" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
-</div>
-
-<!-- PAGE 1B : VIDÉO -->
-<div id="pg1b" class="content" style="display:none">
-  <button class="btn-back" onclick="goHome()">&#8617; Retour</button>
-
-  <div id="videopreview" style="display:none">
-    <video id="videoplayer" controls></video>
-  </div>
-  <div class="media-zone" id="videozone" onclick="document.getElementById('videoinput').click()" style="display:flex">
-    <div class="media-placeholder">
-      <div style="font-size:40px">&#127916;</div>
-      <div style="font-size:13px;color:rgba(238,234,228,0.5)">Appuie pour importer ta vid&eacute;o</div>
-    </div>
-  </div>
-  <div class="media-btns">
-    <button class="media-btn" onclick="document.getElementById('videocamera').click()">&#127916; Filmer</button>
-    <button class="media-btn" onclick="document.getElementById('videoinput').click()">&#128444; Galerie</button>
-    <button class="media-btn" onclick="clearVideo()">&#128465; Vider</button>
-  </div>
-
-  <div class="montage-info">
-    <div class="title">&#127916; Service montage professionnel</div>
-    <div class="desc">Tu veux une vid&eacute;o mont&eacute;e avec musique, sous-titres et transitions ? Envoie ta demande et re&ccedil;ois ton Reel dans les 24h.</div>
-    <span class="price-tag">50&euro; le montage</span>
-  </div>
-
-  <div class="label">CALL TO ACTION</div>
-  <div class="row">
-    <button class="tog" id="vc1" onclick="pick('vcta','Oui')">Oui</button>
-    <button class="tog" id="vc2" onclick="pick('vcta','Non')">Non</button>
-  </div>
-  <div class="label">DE QUOI PARLE TA VID&Eacute;O ?</div>
-  <input type="text" id="vhl" oninput="chk()" placeholder="ex : visite de notre atelier, nouveau service..." />
-  <div class="label">TON TITRE</div>
-  <input type="text" id="vti" oninput="chk()" placeholder="ex : Dans les coulisses de BDLIM !" />
-  <div class="label">L'IA AM&Eacute;LIORE TON TITRE ?</div>
-  <div class="row">
-    <button class="tog" id="va1" onclick="pick('vai','Oui')">Oui</button>
-    <button class="tog" id="va2" onclick="pick('vai','Non')">Non</button>
-  </div>
-  <div id="verr" class="err"></div>
-  <button id="vgenbtn" class="btn-gen" onclick="gen('video')" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
-  <button class="btn-secondary" onclick="goMontage()">&#127916; Demander un montage (50&euro;)</button>
-</div>
-
-<!-- PAGE 1B2 : DEMANDE MONTAGE -->
-<div id="pg1b2" class="content" style="display:none">
-  <button class="btn-back" onclick="goVideo()">&#8617; Retour</button>
-  <div class="label">DEMANDE DE MONTAGE VID&Eacute;O</div>
-  <div class="montage-info">
-    <div class="title">&#127916; Montage professionnel — 50&euro;</div>
-    <div class="desc">Musique d'ambiance &bull; Sous-titres &bull; Transitions &bull; Format Reel<br>R&eacute;ponse sous 24h</div>
-  </div>
-  <div class="label">TON NOM</div>
-  <input type="text" id="mname" placeholder="Pr&eacute;nom Nom" />
-  <div class="label">TON EMAIL</div>
-  <input type="text" id="memail" placeholder="email@exemple.fr" />
-  <div class="label">D&Eacute;CRIS TA VID&Eacute;O</div>
-  <textarea id="mdesc" placeholder="Ex : vid&eacute;o de 30s de notre atelier, on veut une musique dynamique et des sous-titres..."></textarea>
-  <div class="label">STYLE SOUHAIT&Eacute;</div>
-  <div class="row">
-    <button class="tog" id="ms1" onclick="pickStyle('dynamique')">Dynamique</button>
-    <button class="tog" id="ms2" onclick="pickStyle('chaleureux')">Chaleureux</button>
-    <button class="tog" id="ms3" onclick="pickStyle('pro')">Professionnel</button>
-  </div>
-  <div id="msuccess" class="success">&#10003; Demande envoy&eacute;e ! On te contacte sous 24h.</div>
-  <button class="btn-gen" onclick="sendMontage()" style="background:linear-gradient(135deg,#8b4513,#e67e22)">&#127916; Envoyer ma demande</button>
-</div>
-
-<!-- PAGE 1C : GRAPHIQUE -->
-<div id="pg1c" class="content" style="display:none">
-  <button class="btn-back" onclick="goHome()">&#8617; Retour</button>
-  <div class="label">CHOISIS UN MOD&Egrave;LE</div>
-  <div class="templates">
-    <div class="tpl" id="tpl1" onclick="pickTpl('produit')">
-      <div class="tpl-icon">&#128230;</div>
-      <div class="tpl-name">Produit</div>
-      <div class="tpl-desc">Mise en avant</div>
-    </div>
-    <div class="tpl" id="tpl2" onclick="pickTpl('promo')">
-      <div class="tpl-icon">&#127991;</div>
-      <div class="tpl-name">Promotion</div>
-      <div class="tpl-desc">Offre, r&eacute;duction</div>
-    </div>
-    <div class="tpl" id="tpl3" onclick="pickTpl('fierte')">
-      <div class="tpl-icon">&#127942;</div>
-      <div class="tpl-name">Fiert&eacute;</div>
-      <div class="tpl-desc">Histoire, valeurs</div>
-    </div>
-    <div class="tpl" id="tpl4" onclick="pickTpl('conseil')">
-      <div class="tpl-icon">&#128161;</div>
-      <div class="tpl-name">Conseil</div>
-      <div class="tpl-desc">Astuce utile</div>
-    </div>
-  </div>
-  <div class="label">FORMAT</div>
-  <div class="format-row">
-    <button class="fmt-btn" id="fmt1" onclick="pickFmt(1)">1 image</button>
-    <button class="fmt-btn" id="fmt2" onclick="pickFmt(2)">Carrousel x2</button>
-    <button class="fmt-btn" id="fmt3" onclick="pickFmt(3)">Carrousel x3</button>
-  </div>
-  <div class="label">CE QUE TU VEUX METTRE EN AVANT</div>
-  <input type="text" id="ghl" oninput="chk()" placeholder="ex : nouvelle offre, conseil..." />
-  <div class="label">TON TITRE</div>
-  <input type="text" id="gti" oninput="chk()" placeholder="ex : Ce mois-ci, profitez de -20% !" />
-  <div class="label">L'IA AM&Eacute;LIORE TON TITRE ?</div>
-  <div class="row">
-    <button class="tog" id="ga1" onclick="pick('gai','Oui')">Oui</button>
-    <button class="tog" id="ga2" onclick="pick('gai','Non')">Non</button>
-  </div>
-  <div class="label">CALL TO ACTION</div>
-  <div class="row">
-    <button class="tog" id="gc1" onclick="pick('gcta','Oui')">Oui</button>
-    <button class="tog" id="gc2" onclick="pick('gcta','Non')">Non</button>
-  </div>
-  <div id="gerr" class="err"></div>
-  <button id="ggenbtn" class="btn-gen" onclick="gen('graphic')" disabled>&#10024; G&eacute;n&eacute;rer avec l'IA</button>
-</div>
-
-<!-- PAGE 2 : LOADING -->
-<div id="pg2" class="loading">
+<!-- LOADING -->
+<div id="page-loading" class="loading">
   <div class="spinner"></div>
-  <div style="font-size:15px;font-weight:bold">G&eacute;n&eacute;ration en cours...</div>
-  <div style="font-size:12px;color:rgba(238,234,232,0.3)">L'IA cr&eacute;e ton contenu</div>
+  <div style="font-size:14px;font-weight:bold">G&eacute;n&eacute;ration en cours...</div>
+  <div style="font-size:11px;color:rgba(238,234,232,0.3)">L'IA cr&eacute;e ton contenu</div>
 </div>
 
-<!-- PAGE 3 : RÉSULTATS -->
-<div id="pg3" class="res">
+<!-- RÉSULTATS -->
+<div id="page-results" class="res-page">
   <div id="previewwrap" style="display:none">
-    <div class="preview-wrap">
-      <img id="resphoto" src="" alt="photo" />
-      <div class="overlay-title" id="overlaytitle"></div>
-    </div>
+    <div class="preview-wrap"><img id="resphoto" src="" alt="photo" /><div class="overlay-title" id="overlaytitle"></div></div>
     <div class="carousel-dots" id="carouseldots"></div>
   </div>
-  <div id="videoRes" class="video-res" style="display:none">
-    <div style="font-size:40px;margin-bottom:10px">&#127916;</div>
-    <div id="videoResTitle" style="font-size:15px;font-weight:bold;margin-bottom:6px"></div>
-    <div style="font-size:11px;color:rgba(238,234,228,0.4)">Vid&eacute;o import&eacute;e</div>
-    <button class="btn-montage" style="margin-top:16px" onclick="goMontage()">&#127916; Demander un montage pro (50&euro;)</button>
+  <div id="videoRes" style="display:none;text-align:center;padding:20px;background:#0d1e38;border-radius:12px;margin-bottom:14px">
+    <div style="font-size:36px;margin-bottom:8px">&#127916;</div>
+    <div id="videoResTitle" style="font-size:14px;font-weight:bold;margin-bottom:4px"></div>
+    <button class="btn-secondary" style="margin-top:10px" onclick="goSub('montage');showPage('creation')">&#127916; Demander un montage pro (50&euro;)</button>
   </div>
   <div id="graphicpreview" class="graphic-preview" style="display:none">
-    <div id="gpicon" style="font-size:48px"></div>
-    <div id="gptitle" style="font-size:18px;font-weight:bold"></div>
-    <div id="gpsubtitle" style="font-size:12px;opacity:0.6"></div>
+    <div id="gpicon" style="font-size:44px"></div>
+    <div id="gptitle" style="font-size:16px;font-weight:bold"></div>
+    <div id="gpsubtitle" style="font-size:11px;opacity:0.6"></div>
   </div>
-  <div id="aibox" class="aibox">
+  <div id="aibox" class="aibox" style="display:none">
     <div class="ailbl">&#10024; TITRE AM&Eacute;LIOR&Eacute; PAR L'IA</div>
-    <div id="aitxt" style="font-size:15px;font-weight:bold;margin-bottom:4px"></div>
-    <div id="origtxt" style="font-size:11px;color:rgba(238,234,228,0.3)"></div>
+    <div id="aitxt" style="font-size:14px;font-weight:bold;margin-bottom:3px"></div>
+    <div id="origtxt" style="font-size:10px;color:rgba(238,234,228,0.3)"></div>
   </div>
   <div class="seclbl">3 CAPTIONS G&Eacute;N&Eacute;R&Eacute;ES PAR L'IA</div>
   <div id="capslist"></div>
@@ -326,38 +320,214 @@ input[type="file"] { display: none; }
     <button class="share-btn share-ig" onclick="shareIG()">&#128247; Instagram</button>
     <button class="share-btn share-li" onclick="shareLI()">in LinkedIn</button>
   </div>
-  <button class="btn-save" onclick="savePhoto()">&#128190; Enregistrer</button>
-  <button class="btn-reset" onclick="goHome()">onclick="raz()">&#8617; Nouveau post#8617; Nouveau post</button>
+  <button class="btn-save" onclick="saveFeed()">&#128190; Enregistrer dans mon feed</button>
+  <button class="btn-reset" onclick="goHome()">&#8617; Nouveau post</button>
+</div>
+
+<!-- PAGE FEED -->
+<div id="page-feed" class="page">
+  <div class="feed-header">
+    <div class="feed-avatar">&#128247;</div>
+    <div>
+      <div class="feed-name">Mon Feed</div>
+      <div class="feed-bio">Aper&ccedil;u de mes publications</div>
+    </div>
+  </div>
+  <button class="feed-new-btn" onclick="showPage('creation');goSub('home')">&#43; Cr&eacute;er un nouveau post</button>
+  <div class="feed-grid" id="feedGrid">
+    <div class="feed-empty">Aucun post pour l'instant.<br>Cr&eacute;e ton premier contenu !</div>
+  </div>
+</div>
+
+<!-- PAGE IDÉES -->
+<div id="page-idees" class="page">
+  <div class="week-label">SEMAINE DU 7 AVRIL 2026</div>
+  <div class="idea-card" onclick="useIdea(this)">
+    <span class="idea-tag" style="background:rgba(61,140,224,0.15);color:#3d8ce0">Fiert&eacute;</span>
+    <div class="idea-title">Raconte ton histoire</div>
+    <div class="idea-desc">Partage l'histoire de ta cr&eacute;ation, tes valeurs, ce qui te rend unique. Les clients adorent savoir d'o&ugrave; tu viens.</div>
+  </div>
+  <div class="idea-card" onclick="useIdea(this)">
+    <span class="idea-tag" style="background:rgba(46,204,113,0.15);color:#2ecc71">Coulisses</span>
+    <div class="idea-title">Dans les coulisses</div>
+    <div class="idea-desc">Montre ton quotidien, ton &eacute;quipe, ton atelier. L'authenticit&eacute; cr&eacute;e de la proximit&eacute; avec ta communaut&eacute;.</div>
+  </div>
+  <div class="idea-card" onclick="useIdea(this)">
+    <span class="idea-tag" style="background:rgba(230,126,34,0.15);color:#e67e22">Promotion</span>
+    <div class="idea-title">Offre de la semaine</div>
+    <div class="idea-desc">Une r&eacute;duction, un service offert, un bonus. Cr&eacute;e l'urgence avec une offre limit&eacute;e dans le temps.</div>
+  </div>
+  <div class="idea-card" onclick="useIdea(this)">
+    <span class="idea-tag" style="background:rgba(123,94,167,0.15);color:#b39ddb">Conseil</span>
+    <div class="idea-title">Astuce du moment</div>
+    <div class="idea-desc">Partage un conseil pratique li&eacute; &agrave; ton m&eacute;tier. Tu te positionnes comme expert et tu apportes de la valeur.</div>
+  </div>
+  <div class="idea-card" onclick="useIdea(this)">
+    <span class="idea-tag" style="background:rgba(61,140,224,0.15);color:#3d8ce0">Avis client</span>
+    <div class="idea-title">T&eacute;moignage client</div>
+    <div class="idea-desc">Partage un avis positif re&ccedil;u cette semaine. La preuve sociale est le meilleur argument de vente.</div>
+  </div>
+  <div class="idea-card" onclick="useIdea(this)">
+    <span class="idea-tag" style="background:rgba(46,204,113,0.15);color:#2ecc71">Lifestyle</span>
+    <div class="idea-title">Inspire ton audience</div>
+    <div class="idea-desc">Une citation, une image d'ambiance, un moment inspir&eacute;. Cr&eacute;e une connexion &eacute;motionnelle avec ta communaut&eacute;.</div>
+  </div>
+</div>
+
+<!-- PAGE CONTACT -->
+<div id="page-contact" class="page">
+  <div style="font-size:18px;font-weight:bold;margin-bottom:6px">Besoin d'aide ?</div>
+  <div style="font-size:12px;color:rgba(238,234,228,0.5);margin-bottom:20px;line-height:1.5">R&eacute;ponse garantie sous 24h</div>
+
+  <div class="contact-option" onclick="toggleForm('form-montage')">
+    <div class="contact-icon">&#127916;</div>
+    <div>
+      <div class="contact-title">Montage vid&eacute;o</div>
+      <div class="contact-desc">Reel professionnel avec musique et sous-titres</div>
+      <div class="contact-price">50&euro; le montage</div>
+    </div>
+  </div>
+  <div id="form-montage" class="contact-form">
+    <span class="label">TON NOM</span>
+    <input type="text" id="cm_name" placeholder="Pr&eacute;nom Nom" />
+    <span class="label">TON EMAIL</span>
+    <input type="text" id="cm_email" placeholder="email@exemple.fr" />
+    <span class="label">D&Eacute;CRIS TA DEMANDE</span>
+    <textarea id="cm_desc" placeholder="D&eacute;cris ta vid&eacute;o et ce que tu souhaites..."></textarea>
+    <button class="btn-gen" style="background:linear-gradient(135deg,#8b4513,#e67e22);margin-top:12px" onclick="sendContact('montage')">Envoyer ma demande</button>
+    <div id="cm_success" class="success-msg">&#10003; Re&ccedil;u ! On te contacte sous 24h.</div>
+  </div>
+
+  <div class="contact-option" onclick="toggleForm('form-photo')">
+    <div class="contact-icon">&#128247;</div>
+    <div>
+      <div class="contact-title">Photo professionnelle</div>
+      <div class="contact-desc">Shooting photo qualit&eacute; professionnelle</div>
+      <div class="contact-price">+10&euro; par s&eacute;ance</div>
+    </div>
+  </div>
+  <div id="form-photo" class="contact-form">
+    <span class="label">TON NOM</span>
+    <input type="text" id="cp_name" placeholder="Pr&eacute;nom Nom" />
+    <span class="label">TON EMAIL</span>
+    <input type="text" id="cp_email" placeholder="email@exemple.fr" />
+    <span class="label">TA DEMANDE</span>
+    <textarea id="cp_desc" placeholder="Dis-nous ce que tu veux photographier..."></textarea>
+    <button class="btn-gen" style="margin-top:12px" onclick="sendContact('photo')">Envoyer ma demande</button>
+    <div id="cp_success" class="success-msg">&#10003; Re&ccedil;u ! On te contacte sous 24h.</div>
+  </div>
+
+  <div class="contact-option" onclick="toggleForm('form-gestion')">
+    <div class="contact-icon">&#128101;</div>
+    <div>
+      <div class="contact-title">Gestion des posts</div>
+      <div class="contact-desc">On publie &agrave; ta place sur tes r&eacute;seaux</div>
+      <div class="contact-price">30&euro;/mois</div>
+    </div>
+  </div>
+  <div id="form-gestion" class="contact-form">
+    <span class="label">TON NOM</span>
+    <input type="text" id="cg_name" placeholder="Pr&eacute;nom Nom" />
+    <span class="label">TON EMAIL</span>
+    <input type="text" id="cg_email" placeholder="email@exemple.fr" />
+    <span class="label">TES R&Eacute;SEAUX</span>
+    <input type="text" id="cg_desc" placeholder="Instagram, LinkedIn, Facebook..." />
+    <button class="btn-gen" style="margin-top:12px" onclick="sendContact('gestion')">Envoyer ma demande</button>
+    <div id="cg_success" class="success-msg">&#10003; Re&ccedil;u ! On te contacte sous 24h.</div>
+  </div>
+
+  <div class="contact-option" onclick="toggleForm('form-autre')">
+    <div class="contact-icon">&#128172;</div>
+    <div>
+      <div class="contact-title">Autre demande</div>
+      <div class="contact-desc">Une question, une id&eacute;e, un projet</div>
+    </div>
+  </div>
+  <div id="form-autre" class="contact-form">
+    <span class="label">TON NOM</span>
+    <input type="text" id="ca_name" placeholder="Pr&eacute;nom Nom" />
+    <span class="label">TON EMAIL</span>
+    <input type="text" id="ca_email" placeholder="email@exemple.fr" />
+    <span class="label">TA DEMANDE</span>
+    <textarea id="ca_desc" placeholder="Explique-nous ton besoin..."></textarea>
+    <button class="btn-gen" style="margin-top:12px" onclick="sendContact('autre')">Envoyer ma demande</button>
+    <div id="ca_success" class="success-msg">&#10003; Re&ccedil;u ! On te contacte sous 24h.</div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-item on" id="nav-creation" onclick="showPage('creation');goSub('home')">
+    <span class="nav-icon">&#43;</span>
+    <span>CR&Eacute;ER</span>
+  </button>
+  <button class="nav-item" id="nav-feed" onclick="showPage('feed')">
+    <span class="nav-icon">&#9783;</span>
+    <span>FEED</span>
+  </button>
+  <button class="nav-item" id="nav-idees" onclick="showPage('idees')">
+    <span class="nav-icon">&#128161;</span>
+    <span>ID&Eacute;ES</span>
+  </button>
+  <button class="nav-item" id="nav-contact" onclick="showPage('contact')">
+    <span class="nav-icon">&#128172;</span>
+    <span>CONTACT</span>
+  </button>
 </div>
 
 <script>
 var mode='photo', vcta=null, vai=null, vcta2=null, vai2=null, vgcta=null, vgai=null;
 var vtpl=null, vfmt=1, vstyle=null;
-var photos=[], videoFile=null, selectedCaption='';
+var photos=[], videoFile=null, selectedCaption='', savedTi='';
+var feedItems=[];
 
-var tplColors = {
+var tplColors={
   produit:{bg:'linear-gradient(135deg,#0d2b5e,#1a5276)',icon:'&#128230;'},
   promo:{bg:'linear-gradient(135deg,#7d0000,#c0392b)',icon:'&#127991;'},
   fierte:{bg:'linear-gradient(135deg,#0d1e38,#2471a3)',icon:'&#127942;'},
   conseil:{bg:'linear-gradient(135deg,#1a3a1a,#27ae60)',icon:'&#128161;'}
 };
 
-function show(id){document.getElementById(id).style.display='block';}
-function hide(ids){ids.forEach(function(id){document.getElementById(id).style.display='none';});}
-function goHome(){hide(['pg1a','pg1b','pg1b2','pg1c','pg2','pg3']);show('pg0');raz();}
-function goPhotos(){mode='photo';hide(['pg0']);show('pg1a');}
-function goVideo(){mode='video';hide(['pg0','pg1b2']);show('pg1b');}
-function goGraphic(){mode='graphic';hide(['pg0']);show('pg1c');}
-function goMontage(){hide(['pg1b','pg3']);show('pg1b2');}
+function showPage(p) {
+  var pages=['creation','feed','idees','contact'];
+  pages.forEach(function(pg){
+    var el=document.getElementById('page-'+pg);
+    if(el) el.className='page';
+    var nav=document.getElementById('nav-'+pg);
+    if(nav) nav.className='nav-item';
+  });
+  document.getElementById('page-loading').style.display='none';
+  document.getElementById('page-results').style.display='none';
+  var target=document.getElementById('page-'+p);
+  if(target) target.className='page on';
+  var navTarget=document.getElementById('nav-'+p);
+  if(navTarget) navTarget.className='nav-item on';
+}
 
-function onPhotos(e){
+function goHome() {
+  showPage('creation');
+  goSub('home');
+  raz();
+}
+
+function goSub(s) {
+  var subs=['home','photos','video','montage','graphique'];
+  subs.forEach(function(sub){
+    var el=document.getElementById('sub-'+sub);
+    if(el) el.style.display='none';
+  });
+  var target=document.getElementById('sub-'+s);
+  if(target) target.style.display='block';
+}
+
+function onPhotos(e) {
   Array.from(e.target.files).forEach(function(f){
     var r=new FileReader();
     r.onload=function(ev){photos.push(ev.target.result);renderPhotos();};
     r.readAsDataURL(f);
   });
 }
-function renderPhotos(){
+function renderPhotos() {
   if(!photos.length)return;
   var grid=document.getElementById('photogrid');
   document.getElementById('photoplaceholder').style.display='none';
@@ -367,27 +537,25 @@ function renderPhotos(){
   grid.style.gridTemplateColumns=photos.length===1?'1fr':'1fr 1fr';
   photos.slice(0,4).forEach(function(p){
     var img=document.createElement('img');
-    img.src=p;img.style.height=photos.length===1?'200px':'100px';
+    img.src=p;img.style.height=photos.length===1?'180px':'90px';
     grid.appendChild(img);
   });
   var cnt=document.getElementById('photocount');
   cnt.style.display='block';
-  cnt.textContent=photos.length+' photo'+(photos.length>1?'s — Carrousel':'');
+  cnt.textContent=photos.length+' photo'+(photos.length>1?'s \u2014 Carrousel':'');
 }
 function clearPhotos(){
   photos=[];
-  document.getElementById('photogrid').style.display='none';
-  document.getElementById('photogrid').innerHTML='';
+  var grid=document.getElementById('photogrid');
+  grid.style.display='none';grid.innerHTML='';
   document.getElementById('photoplaceholder').style.display='flex';
   document.getElementById('photocount').style.display='none';
   document.getElementById('photozone').onclick=function(){document.getElementById('fileinput').click();};
 }
-
 function onVideo(e){
   videoFile=e.target.files[0];
   if(!videoFile)return;
-  var url=URL.createObjectURL(videoFile);
-  document.getElementById('videoplayer').src=url;
+  document.getElementById('videoplayer').src=URL.createObjectURL(videoFile);
   document.getElementById('videopreview').style.display='block';
   document.getElementById('videozone').style.display='none';
   chk();
@@ -399,7 +567,6 @@ function clearVideo(){
   document.getElementById('videozone').style.display='flex';
   chk();
 }
-
 function pickTpl(t){
   vtpl=t;
   ['tpl1','tpl2','tpl3','tpl4'].forEach(function(id){document.getElementById(id).className='tpl';});
@@ -418,7 +585,6 @@ function pickStyle(s){
   var m={dynamique:'ms1',chaleureux:'ms2',pro:'ms3'};
   if(m[s])document.getElementById(m[s]).className='tog bl';
 }
-
 function pick(key,val){
   var cfg={cta:['pc1','pc2','bl'],ai:['pa1','pa2','pu'],vcta:['vc1','vc2','bl'],vai:['va1','va2','pu'],gcta:['gc1','gc2','bl'],gai:['ga1','ga2','pu']};
   if(key==='cta')vcta=val;else if(key==='ai')vai=val;
@@ -429,37 +595,24 @@ function pick(key,val){
   document.getElementById(c[1]).className='tog'+(val==='Non'?' '+c[2]:'');
   chk();
 }
-
 function chk(){
-  if(mode==='photo'){
-    var ok=vcta&&vai&&document.getElementById('phl').value.trim()&&document.getElementById('pti').value.trim();
-    document.getElementById('pgenbtn').disabled=!ok;
-  }else if(mode==='video'){
-    var ok2=vcta2&&vai2&&document.getElementById('vhl').value.trim()&&document.getElementById('vti').value.trim();
-    document.getElementById('vgenbtn').disabled=!ok2;
-  }else{
-    var ok3=vtpl&&vgcta&&vgai&&document.getElementById('ghl').value.trim()&&document.getElementById('gti').value.trim();
-    document.getElementById('ggenbtn').disabled=!ok3;
-  }
+  if(mode==='photo'){var ok=vcta&&vai&&document.getElementById('phl').value.trim()&&document.getElementById('pti').value.trim();document.getElementById('pgenbtn').disabled=!ok;}
+  else if(mode==='video'){var ok2=vcta2&&vai2&&document.getElementById('vhl').value.trim()&&document.getElementById('vti').value.trim();document.getElementById('vgenbtn').disabled=!ok2;}
+  else{var ok3=vtpl&&vgcta&&vgai&&document.getElementById('ghl').value.trim()&&document.getElementById('gti').value.trim();document.getElementById('ggenbtn').disabled=!ok3;}
 }
-
 function gen(m){
   mode=m;
   var hl,ti,cta,ai;
-  if(m==='photo'){hl=document.getElementById('phl').value.trim();ti=document.getElementById('pti').value.trim();cta=vcta;ai=vai;hide(['pg1a']);}
-  else if(m==='video'){hl=document.getElementById('vhl').value.trim();ti=document.getElementById('vti').value.trim();cta=vcta2;ai=vai2;hide(['pg1b']);}
-  else{hl=document.getElementById('ghl').value.trim();ti=document.getElementById('gti').value.trim();cta=vgcta;ai=vgai;hide(['pg1c']);}
-  show('pg2');
-
-  var prompt='Tu es un expert en reseaux sociaux pour BDLIM, blanchisserie industrielle fondee en 1916.\n'+
-    'Type : '+(m==='video'?'video/reel':m==='graphic'?vtpl:'photo')+'.\n'+
-    'Titre : "'+ti+'"\nMise en avant : "'+hl+'"\nCTA : '+(cta==='Oui'?'Oui':'Non')+'\n\n'+
-    'REPONDS UNIQUEMENT :\n'+(ai==='Oui'?'NOUVEAU_TITRE: [max 8 mots]\n':'')+
-    'CAPTION_1: [2-3 phrases emojis]\nCAPTION_2: [different 2-3 phrases emojis]\nCAPTION_3: [poetique 2-3 phrases emojis]';
+  if(m==='photo'){hl=document.getElementById('phl').value.trim();ti=document.getElementById('pti').value.trim();cta=vcta;ai=vai;}
+  else if(m==='video'){hl=document.getElementById('vhl').value.trim();ti=document.getElementById('vti').value.trim();cta=vcta2;ai=vai2;}
+  else{hl=document.getElementById('ghl').value.trim();ti=document.getElementById('gti').value.trim();cta=vgcta;ai=vgai;}
+  savedTi=ti;
+  document.getElementById('page-creation').className='page';
+  document.getElementById('page-loading').style.display='flex';
 
   fetch('https://posto-production-061c.up.railway.app/generate',{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({cta:cta,highlight:hl,title:ti,aiTitle:ai,prompt:prompt})
+    body:JSON.stringify({cta:cta,highlight:hl,title:ti,aiTitle:ai})
   })
   .then(function(r){return r.json();})
   .then(function(d){
@@ -472,34 +625,39 @@ function gen(m){
       else if(l.indexOf('CAPTION_2:')===0)caps[1]=l.replace('CAPTION_2:','').trim();
       else if(l.indexOf('CAPTION_3:')===0)caps[2]=l.replace('CAPTION_3:','').trim();
     });
-    while(caps.length<3)caps.push('BDLIM, depuis 1916.');
+    while(caps.length<3)caps.push('Contenu g\u00e9n\u00e9r\u00e9 par l\'IA.');
     selectedCaption=caps[0]||'';
 
-    hide(['previewwrap','videoRes','graphicpreview','aibox']);
+    document.getElementById('previewwrap').style.display='none';
+    document.getElementById('videoRes').style.display='none';
+    document.getElementById('graphicpreview').style.display='none';
+    document.getElementById('aibox').style.display='none';
 
     if(m==='photo'&&photos.length>0){
       document.getElementById('resphoto').src=photos[0];
       document.getElementById('overlaytitle').textContent=nt||ti;
-      show('previewwrap');
+      document.getElementById('previewwrap').style.display='block';
       if(photos.length>1){
         var dots=document.getElementById('carouseldots');dots.innerHTML='';
         photos.forEach(function(p,i){var d=document.createElement('div');d.className='dot'+(i===0?' on':'');dots.appendChild(d);});
       }
     }else if(m==='video'){
       document.getElementById('videoResTitle').textContent=nt||ti;
-      show('videoRes');
+      document.getElementById('videoRes').style.display='block';
     }else{
       var td=tplColors[vtpl]||tplColors.fierte;
       var gp=document.getElementById('graphicpreview');
       gp.style.background=td.bg;
       document.getElementById('gpicon').innerHTML=td.icon;
       document.getElementById('gptitle').textContent=nt||ti;
-      document.getElementById('gpsubtitle').textContent='BDLIM \u00b7 SINCE 1916'+(vfmt>1?' \u2014 Carrousel x'+vfmt:'');
-      show('graphicpreview');
+      document.getElementById('gpsubtitle').textContent='Posto Studio'+(vfmt>1?' \u2014 Carrousel x'+vfmt:'');
+      document.getElementById('graphicpreview').style.display='block';
     }
-
-    if(nt){show('aibox');document.getElementById('aitxt').textContent=nt;document.getElementById('origtxt').textContent='Ton titre : '+ti;}
-
+    if(nt){
+      document.getElementById('aibox').style.display='block';
+      document.getElementById('aitxt').textContent=nt;
+      document.getElementById('origtxt').textContent='Ton titre : '+ti;
+    }
     var cl=document.getElementById('capslist');cl.innerHTML='';
     for(var j=0;j<3;j++){
       var el=document.createElement('div');
@@ -507,25 +665,67 @@ function gen(m){
       (function(e,c){e.onclick=function(){var all=document.getElementsByClassName('cap');for(var k=0;k<all.length;k++)all[k].className='cap';e.className='cap on';selectedCaption=c;};})(el,caps[j]);
       cl.appendChild(el);
     }
-    hide(['pg2']);show('pg3');
+    document.getElementById('page-loading').style.display='none';
+    document.getElementById('page-results').style.display='block';
+    window.scrollTo(0,0);
   })
   .catch(function(e){
-    hide(['pg2']);
-    if(mode==='photo')show('pg1a');else if(mode==='video')show('pg1b');else show('pg1c');
+    document.getElementById('page-loading').style.display='none';
+    showPage('creation');
     var em=document.getElementById(mode==='photo'?'perr':mode==='video'?'verr':'gerr');
-    em.style.display='block';em.textContent='Erreur : '+e.message;
+    if(em){em.style.display='block';em.textContent='Erreur : '+e.message;}
   });
+}
+
+function saveFeed(){
+  var item={caption:selectedCaption,title:savedTi,photo:photos[0]||null,date:new Date().toLocaleDateString('fr-FR')};
+  feedItems.unshift(item);
+  renderFeed();
+  alert('Post enregistr\u00e9 dans ton feed !');
+  goHome();
+}
+
+function renderFeed(){
+  var grid=document.getElementById('feedGrid');
+  if(feedItems.length===0){grid.innerHTML='<div class="feed-empty">Aucun post pour l\'instant.<br>Cr\u00e9e ton premier contenu !</div>';return;}
+  grid.innerHTML='';
+  feedItems.forEach(function(item){
+    var div=document.createElement('div');div.className='feed-item';
+    if(item.photo){var img=document.createElement('img');img.src=item.photo;div.appendChild(img);}
+    else{var ph=document.createElement('div');ph.className='feed-placeholder';ph.textContent='\uD83D\uDCF7';div.appendChild(ph);}
+    grid.appendChild(div);
+  });
+}
+
+function useIdea(card){
+  var title=card.querySelector('.idea-title').textContent;
+  var desc=card.querySelector('.idea-desc').textContent;
+  showPage('creation');
+  goSub('photos');
+  document.getElementById('pti').value=title;
+  document.getElementById('phl').value=desc.substring(0,50);
+  chk();
+}
+
+function toggleForm(id){
+  var form=document.getElementById(id);
+  form.style.display=form.style.display==='block'?'none':'block';
+}
+
+function sendContact(type){
+  var prefix={montage:'cm',photo:'cp',gestion:'cg',autre:'ca'}[type];
+  var name=document.getElementById(prefix+'_name').value.trim();
+  var email=document.getElementById(prefix+'_email').value.trim();
+  if(!name||!email){alert('Merci de remplir ton nom et email.');return;}
+  document.getElementById(prefix+'_success').style.display='block';
+  setTimeout(function(){document.getElementById(prefix+'_success').style.display='none';},3000);
 }
 
 function sendMontage(){
   var name=document.getElementById('mname').value.trim();
   var email=document.getElementById('memail').value.trim();
-  var desc=document.getElementById('mdesc').value.trim();
-  if(!name||!email||!desc){alert('Merci de remplir tous les champs.');return;}
+  if(!name||!email){alert('Merci de remplir ton nom et email.');return;}
   document.getElementById('msuccess').style.display='block';
-  document.getElementById('mname').value='';
-  document.getElementById('memail').value='';
-  document.getElementById('mdesc').value='';
 }
 
 function shareIG(){
@@ -536,23 +736,18 @@ function shareIG(){
 function shareLI(){
   window.open('https://www.linkedin.com/sharing/share-offsite/?url=https://posto-production-061c.up.railway.app&summary='+encodeURIComponent(selectedCaption),'_blank');
 }
-function savePhoto(){
-  if(!photos[0]){alert('Pas de photo.');return;}
-  var a=document.createElement('a');a.href=photos[0];a.download='posto-bdlim.jpg';a.click();
-}
 
 function raz(){
-  photos=[];videoFile=null;vcta=null;vai=null;vcta2=null;vai2=null;vgcta=null;vgai=null;vtpl=null;vfmt=1;vstyle=null;selectedCaption='';
-  ['pc1','pc2','pa1','pa2','vc1','vc2','va1','va2','gc1','gc2','ga1','ga2'].forEach(function(id){var el=document.getElementById(id);if(el)el.className='tog';});
+  photos=[];videoFile=null;vcta=null;vai=null;vcta2=null;vai2=null;vgcta=null;vgai=null;vtpl=null;vfmt=1;vstyle=null;selectedCaption='';savedTi='';
+  ['pc1','pc2','pa1','pa2','vc1','vc2','va1','va2','gc1','gc2','ga1','ga2','ms1','ms2','ms3'].forEach(function(id){var el=document.getElementById(id);if(el)el.className='tog';});
   ['tpl1','tpl2','tpl3','tpl4'].forEach(function(id){var el=document.getElementById(id);if(el)el.className='tpl';});
   ['fmt1','fmt2','fmt3'].forEach(function(id){var el=document.getElementById(id);if(el)el.className='fmt-btn';});
   ['phl','pti','vhl','vti','ghl','gti','mname','memail','mdesc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   clearPhotos();clearVideo();
-  document.getElementById('aibox').style.display='none';
-  document.getElementById('msuccess').style.display='none';
   if(document.getElementById('pgenbtn'))document.getElementById('pgenbtn').disabled=true;
   if(document.getElementById('vgenbtn'))document.getElementById('vgenbtn').disabled=true;
   if(document.getElementById('ggenbtn'))document.getElementById('ggenbtn').disabled=true;
+  document.getElementById('msuccess').style.display='none';
 }
 </script>
 </body>
