@@ -13,14 +13,14 @@ const clients = {
   martin: { name: 'Boulangerie Martin', color: '#8b4513', colorLight: '#c0392b' }
 };
 
-app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'posto.html')); });
+app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'app.html')); });
 app.get('/admin', (req, res) => { res.sendFile(path.join(__dirname, 'admin.html')); });
 app.get('/admin.html', (req, res) => { res.sendFile(path.join(__dirname, 'admin.html')); });
 app.get('/:client', (req, res) => {
   const clientId = req.params.client.toLowerCase();
   const client = clients[clientId];
-  if (!client) return res.sendFile(path.join(__dirname, 'posto.html'));
-  let html = fs.readFileSync(path.join(__dirname, 'posto.html'), 'utf8');
+  if (!client) return res.sendFile(path.join(__dirname, 'app.html'));
+  let html = fs.readFileSync(path.join(__dirname, 'app.html'), 'utf8');
   html = html.replace(/Posto Studio/g, client.name);
   html = html.replace(/<title>Posto Studio<\/title>/, '<title>' + client.name + '</title>');
   html = html.replace(/#3d8ce0/g, client.color);
