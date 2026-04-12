@@ -134,6 +134,8 @@ video { width: 100%; max-height: 180px; display: block; border-radius: 12px; mar
 
 input[type="file"] { display: none; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init("Gg1Wl2WLrhqbfxyxO");</script>
 </head>
 <body>
 
@@ -716,16 +718,40 @@ function sendContact(type){
   var prefix={montage:'cm',photo:'cp',gestion:'cg',autre:'ca'}[type];
   var name=document.getElementById(prefix+'_name').value.trim();
   var email=document.getElementById(prefix+'_email').value.trim();
+  var desc=document.getElementById(prefix+'_desc')||document.getElementById(prefix+'_desc');
+  var descVal=desc?desc.value.trim():'';
   if(!name||!email){alert('Merci de remplir ton nom et email.');return;}
-  document.getElementById(prefix+'_success').style.display='block';
-  setTimeout(function(){document.getElementById(prefix+'_success').style.display='none';},3000);
+  var typeLabels={montage:'Montage video',photo:'Photo professionnelle',gestion:'Gestion posts',autre:'Autre demande'};
+  emailjs.send('service_smft1da','template_j6vpg4b',{
+    nom: name,
+    email: email,
+    type: typeLabels[type]||type,
+    message: descVal,
+    style: 'N/A'
+  }).then(function(){
+    document.getElementById(prefix+'_success').style.display='block';
+    setTimeout(function(){document.getElementById(prefix+'_success').style.display='none';},3000);
+  }).catch(function(err){
+    alert('Erreur envoi : '+JSON.stringify(err));
+  });
 }
 
 function sendMontage(){
   var name=document.getElementById('mname').value.trim();
   var email=document.getElementById('memail').value.trim();
+  var desc=document.getElementById('mdesc').value.trim();
   if(!name||!email){alert('Merci de remplir ton nom et email.');return;}
-  document.getElementById('msuccess').style.display='block';
+  emailjs.send('service_smft1da','template_j6vpg4b',{
+    nom: name,
+    email: email,
+    type: 'Montage video',
+    message: desc,
+    style: vstyle||'Non precise'
+  }).then(function(){
+    document.getElementById('msuccess').style.display='block';
+  }).catch(function(err){
+    alert('Erreur envoi : '+JSON.stringify(err));
+  });
 }
 
 function shareIG(){
