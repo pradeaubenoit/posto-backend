@@ -730,7 +730,31 @@ function sendMontage(){
   var email=document.getElementById('memail').value.trim();
   var desc=document.getElementById('mdesc').value.trim();
   if(!name||!email){alert('Merci de remplir ton nom et email.');return;}
-  console.log('ENVOI:',name,email,desc);fetch('https://posto-production-061c.up.railway.app/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,type:'Montage video',message:desc,style:vstyle||'Non precise'})}).then(function(){document.getElementById('msuccess').style.display='block';}).catch(function(err){alert('Erreur : '+err);});
+  var btn=document.querySelector('#sub-montage .btn-gen');
+  btn.textContent='Envoi en cours...';btn.disabled=true;
+  function doSend(videoUrl){
+    fetch('https://posto-production-061c.up.railway.app/send-email',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:name,email:email,type:'Montage video',message:desc+(videoUrl?'\n\nLIEN VIDEO : '+videoUrl:'\n\nPas de video jointe.'),style:vstyle||'Non precise'})
+    }).then(function(){
+      document.getElementById('msuccess').style.display='block';
+      btn.textContent='Envoyer ma demande';btn.disabled=false;
+    }).catch(function(err){
+      alert('Erreur : '+err);
+      btn.textContent='Envoyer ma demande';btn.disabled=false;
+    });
+  }
+  if(videoFile){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      fetch('https://posto-production-061c.up.railway.app/upload-video',{
+        method:'POST',headers:{'Content-Type':'application/octet-stream'},body:e.target.result
+      }).then(function(r){return r.json();}).then(function(d){doSend(d.url||null);}).catch(function(){doSend(null);});
+    };
+    reader.readAsArrayBuffer(videoFile);
+  } else {
+    doSend(null);
+  }
 }
 
 function shareIG(){
