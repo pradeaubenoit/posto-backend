@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const { v2: cloudinary } = require('cloudinary');
+const emailjs = require('@emailjs/nodejs');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -36,8 +37,28 @@ app.get('/:client', (req, res) => {
   res.send(html);
 });
 
+app.post('/send-email', async (req, res) => {
+  const { name, email, type, message, style, videoUrl } = req.body;
+  try {
+    await emailjs.send('service_qjbwtf8', 'template_j6vpg4b', {
+      name: name || 'Inconnu',
+      email: email || '',
+      type: type || 'Demande',
+      message: (message || '') + (videoUrl ? '\n\nLIEN VIDEO : ' + videoUrl : ''),
+      style: style || 'N/A'
+    }, {
+      publicKey: 'Gg1Wl2WLrhqbfxyxO',
+      privateKey: 'EnL1sdzNyW0aSuGlZRVM8'
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message || JSON.stringify(error) });
+  }
+});
+
 app.post('/upload-video', express.raw({ type: '*/*', limit: '200mb' }), async (req, res) => {
   try {
+    if (!req.body || req.body.length === 0) return res.status(400).json({ error: 'Pas de fichier' });
     const base64 = req.body.toString('base64');
     const dataUri = 'data:video/mp4;base64,' + base64;
     const result = await cloudinary.uploader.upload(dataUri, {
