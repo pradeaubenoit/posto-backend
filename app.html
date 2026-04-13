@@ -740,7 +740,7 @@ function sendContact(type){
   var email=document.getElementById(prefix+'_email').value.trim();
   var desc=document.getElementById(prefix+'_desc')||document.getElementById(prefix+'_desc');
   var descVal=desc?desc.value.trim():'';
-  if(!name||!email){alert('Merci de remplir ton nom et email.');return;} alert('videoFile: '+(videoFile?'OUI '+videoFile.name:'NON'));
+  if(!name||!email){alert('Merci de remplir ton nom et email.');return;} 
   var typeLabels={montage:'Montage video',photo:'Photo professionnelle',gestion:'Gestion posts',autre:'Autre demande'};
   fetch('https://posto-production-061c.up.railway.app/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,type:typeLabels[type]||type,message:descVal,style:'N/A'})}).then(function(){document.getElementById(prefix+'_success').style.display='block';setTimeout(function(){document.getElementById(prefix+'_success').style.display='none';},3000);}).catch(function(err){alert('Erreur : '+err);});
 }
