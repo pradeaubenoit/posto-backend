@@ -723,7 +723,7 @@ function sendContact(type){
   if(!name||!email){alert('Merci de remplir ton nom et email.');return;}
   var typeLabels={montage:'Montage video',photo:'Photo professionnelle',gestion:'Gestion posts',autre:'Autre demande'};
   emailjs.send('service_qjbwtf8','template_j6vpg4b',{
-    nom: name,
+    name: name,
     email: email,
     type: typeLabels[type]||type,
     message: descVal,
@@ -742,7 +742,7 @@ function sendMontage(){
   var desc=document.getElementById('mdesc').value.trim();
   if(!name||!email){alert('Merci de remplir ton nom et email.');return;}
   emailjs.send('service_qjbwtf8','template_j6vpg4b',{
-    nom: name,
+    name: name,
     email: email,
     type: 'Montage video',
     message: desc,
