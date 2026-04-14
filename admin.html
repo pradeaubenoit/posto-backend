@@ -314,6 +314,9 @@ function showTab(t){
     if(sid)sid.className='sidebar-nav-btn';
   });
   document.getElementById('page-'+t).style.display='block';
+  if(t==='clients')loadClients();
+  if(t==='demandes')loadDemandes();
+  if(t==='dashboard')loadDashboard();
   var mob=document.getElementById('tab-'+t);
   var sid=document.getElementById('stab-'+t);
   if(mob)mob.className='nav-btn on';
