@@ -59,8 +59,8 @@ app.use(express.json({ limit: '100mb' }));
 app.use(express.static(path.join(__dirname)));
 
 app.get('/', (req,res) => res.sendFile(path.join(__dirname,'app.html')));
-app.get('/admin', (req,res) => res.sendFile(path.join(__dirname,'admin.html')));
-app.get('/admin.html', (req,res) => res.sendFile(path.join(__dirname,'admin.html')));
+app.get('/admin', (req,res) => res.sendFile(path.join(__dirname,'admin-panel.html')));
+app.get('/admin-panel.html', (req,res) => res.sendFile(path.join(__dirname,'admin-panel.html')));
 
 app.get('/:client', async (req,res) => {
   const clientId = req.params.client.toLowerCase();
