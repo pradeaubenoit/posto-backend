@@ -49,7 +49,7 @@ async function initDB() {
       await pool.query(`INSERT INTO clients (name,slug,sector,color,color_light,email) VALUES ('BDLIM','bdlim','Blanchisserie','#1a5276','#2471a3','contact@bdlim.fr'),('Boulangerie Martin','martin','Boulangerie','#8b4513','#c0392b','marie@martin.fr'),('Restaurant Dupont','dupont','Restaurant','#1a3a1a','#27ae60','dupont@resto.fr')`);
     }
     console.log('DB OK');
-  } catch(err) { console.error('DB Error:', err.message); }
+  } catch(err) { console.error('DB Error full:', JSON.stringify(err), err.message, err.code); }
 }
 initDB();
 
