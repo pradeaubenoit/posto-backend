@@ -707,14 +707,43 @@ function saveFeed(){
   goHome();
 }
 
+function saveFeedToStorage(){
+  try{
+    var toSave=feedItems.map(function(i){return {caption:i.caption,title:i.title,date:i.date,photo:i.photo?'saved':null};});
+    localStorage.setItem('posto_feed',JSON.stringify(toSave));
+  }catch(e){}
+}
+
+function loadFeedFromStorage(){
+  try{
+    var saved=localStorage.getItem('posto_feed');
+    if(saved){
+      var items=JSON.parse(saved);
+      feedItems=items;
+    }
+  }catch(e){}
+}
+
 function renderFeed(){
   var grid=document.getElementById('feedGrid');
   if(feedItems.length===0){grid.innerHTML='<div class="feed-empty">Aucun post pour l\'instant.<br>Cr\u00e9e ton premier contenu !</div>';return;}
   grid.innerHTML='';
   feedItems.forEach(function(item){
     var div=document.createElement('div');div.className='feed-item';
-    if(item.photo){var img=document.createElement('img');img.src=item.photo;div.appendChild(img);}
+    if(item.photo&&item.photo!=='saved'){var img=document.createElement('img');img.src=item.photo;div.appendChild(img);}
     else{var ph=document.createElement('div');ph.className='feed-placeholder';ph.textContent='\uD83D\uDCF7';div.appendChild(ph);}
+    if(item.caption){
+      var cap=document.createElement('div');
+      cap.style.cssText='position:absolute;bottom:0;left:0;right:0;padding:8px;background:rgba(0,0,0,0.7);font-size:10px;color:#fff;line-height:1.3;display:none;';
+      cap.textContent=item.caption.substring(0,100)+'...';
+      div.appendChild(cap);
+      div.onmouseenter=function(){cap.style.display='block';};
+      div.onmouseleave=function(){cap.style.display='none';};
+      div.onclick=function(){
+        if(navigator.clipboard)navigator.clipboard.writeText(item.caption);
+        alert('Caption copiee !\n\n'+item.caption);
+      };
+    }
     grid.appendChild(div);
   });
 }
