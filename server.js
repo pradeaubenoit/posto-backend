@@ -210,6 +210,19 @@ app.post('/upload-video', express.raw({type:'*/*',limit:'200mb'}), async (req,re
   } catch(err) { res.status(500).json({error:err.message}); }
 });
 
+app.get('/download-video', async (req,res) => {
+  const url = req.query.url;
+  const name = req.query.name || 'video.mov';
+  if(!url) return res.status(400).send('URL manquante');
+  try {
+    const response = await fetch(url);
+    const buffer = await response.arrayBuffer();
+    res.setHeader('Content-Disposition', 'attachment; filename="' + name + '"');
+    res.setHeader('Content-Type', 'video/mp4');
+    res.send(Buffer.from(buffer));
+  } catch(err) { res.status(500).send('Erreur: ' + err.message); }
+});
+
 app.post('/generate', async (req,res) => {
   const {cta,highlight,title,aiTitle} = req.body;
   const prompt = 'Tu es un expert en reseaux sociaux pour un commercant. Adapte ton contenu au contexte fourni.\nTitre : "'+title+'"\nMise en avant : "'+highlight+'"\nCTA : '+(cta==='Oui'?'Oui':'Non')+'\n\nREPONDS UNIQUEMENT :\n'+(aiTitle==='Oui'?'NOUVEAU_TITRE: [max 8 mots]\n':'')+'CAPTION_1: [2-3 phrases emojis]\nCAPTION_2: [different 2-3 phrases emojis]\nCAPTION_3: [poetique 2-3 phrases emojis]';
