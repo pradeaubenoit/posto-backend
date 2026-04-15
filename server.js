@@ -32,6 +32,12 @@ async function initDB() {
         notes TEXT,
         created_at TIMESTAMP DEFAULT NOW()
       );
+      CREATE TABLE IF NOT EXISTS settings (
+        id SERIAL PRIMARY KEY,
+        key VARCHAR(100) UNIQUE NOT NULL,
+        value TEXT,
+        updated_at TIMESTAMP DEFAULT NOW()
+      );
       CREATE TABLE IF NOT EXISTS demandes (
         id SERIAL PRIMARY KEY,
         client_name VARCHAR(255),
@@ -108,6 +114,25 @@ app.put('/api/demandes/:id', async (req,res) => {
 app.delete('/api/demandes/:id', async (req,res) => {
   try { await pool.query('DELETE FROM demandes WHERE id=$1',[req.params.id]); res.json({success:true}); }
   catch(err) { res.status(500).json({error:err.message}); }
+});
+
+app.get('/api/settings', async (req,res) => {
+  try {
+    const r = await pool.query('SELECT * FROM settings');
+    var settings = {};
+    r.rows.forEach(function(row){ settings[row.key] = row.value; });
+    res.json(settings);
+  } catch(err) { res.status(500).json({error:err.message}); }
+});
+
+app.post('/api/settings', async (req,res) => {
+  try {
+    const entries = Object.entries(req.body);
+    for (const [key, value] of entries) {
+      await pool.query('INSERT INTO settings (key,value) VALUES ($1,$2) ON CONFLICT (key) DO UPDATE SET value=$2, updated_at=NOW()', [key, value]);
+    }
+    res.json({success:true});
+  } catch(err) { res.status(500).json({error:err.message}); }
 });
 
 app.post('/send-email', async (req,res) => {
