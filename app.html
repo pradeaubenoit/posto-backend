@@ -780,7 +780,7 @@ function sendMontage(){
   var desc=document.getElementById('mdesc').value.trim();
   if(!name||!email){alert('Merci de remplir ton nom et email.');return;}
   var btn=document.querySelector('#sub-montage .btn-gen');
-  btn.textContent='Envoi en cours...';btn.disabled=true;
+  if(btn){btn.textContent='Envoi en cours...';btn.disabled=true;}
   function doSend(videoUrl){
     fetch('https://posto-production-061c.up.railway.app/send-email',{
       method:'POST',headers:{'Content-Type':'application/json'},
