@@ -794,13 +794,18 @@ function sendMontage(){
     });
   }
   if(videoFile){
-    var reader=new FileReader();
-    reader.onload=function(e){
-      fetch('https://posto-production-061c.up.railway.app/upload-video',{
-        method:'POST',headers:{'Content-Type':'application/octet-stream'},body:e.target.result
-      }).then(function(r){return r.json();}).then(function(d){doSend(d.url||null);}).catch(function(){doSend(null);});
-    };
-    reader.readAsArrayBuffer(videoFile);
+    if(typeof videoFile === 'string'){
+      // C'est deja une URL Cloudinary
+      doSend(videoFile);
+    } else {
+      var reader=new FileReader();
+      reader.onload=function(e){
+        fetch('https://posto-production-061c.up.railway.app/upload-video',{
+          method:'POST',headers:{'Content-Type':'application/octet-stream'},body:e.target.result
+        }).then(function(r){return r.json();}).then(function(d){doSend(d.url||null);}).catch(function(){doSend(null);});
+      };
+      reader.readAsArrayBuffer(videoFile);
+    }
   } else {
     doSend(null);
   }
