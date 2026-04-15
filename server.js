@@ -157,12 +157,7 @@ app.post('/api/reply', async (req,res) => {
 
 app.post('/api/generate-reply', async (req,res) => {
   const {message, type, client_name} = req.body;
-  const prompt = 'Tu es un community manager professionnel. Redige une reponse courte et professionnelle a cette demande client.
-Client : '+client_name+'
-Type : '+type+'
-Demande : '+message+'
-
-Reponds directement sans introduction.';
+  const prompt = 'Tu es un community manager professionnel. Redige une reponse courte et professionnelle a cette demande client. Client : '+client_name+'. Type : '+type+'. Demande : '+message+'. Reponds directement sans introduction.';
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
