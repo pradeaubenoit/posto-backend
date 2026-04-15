@@ -334,7 +334,8 @@ function loadDemandes() {
       if(videoUrl){
         html+='<div style="margin-top:10px">';
         html+='<video src="'+videoUrl+'" controls style="width:100%;border-radius:8px;max-height:200px;margin-bottom:6px"></video>';
-        html+='<a href="'+videoUrl+'" target="_blank" style="display:inline-block;padding:6px 12px;background:rgba(61,140,224,0.15);border-radius:8px;color:#3d8ce0;font-size:11px;text-decoration:none">Telecharger</a>';
+        var fname=(d.client_name||'client').replace(/\s+/g,'_')+'_'+new Date(d.created_at).toLocaleDateString('fr-FR').replace(/\//g,'-')+'.mov';
+        html+='<a href="'+videoUrl+'" download="'+fname+'" target="_blank" style="display:inline-block;padding:6px 12px;background:rgba(61,140,224,0.15);border-radius:8px;color:#3d8ce0;font-size:11px;text-decoration:none">Telecharger '+fname+'</a>';
         html+='</div>';
       }
       html+='<div class="card-actions">';
