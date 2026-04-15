@@ -326,7 +326,12 @@ function loadDemandes() {
       if(d.message)html+='Message : '+(d.message).substring(0,200);
       if(d.style)html+='<br>Style : '+d.style;
       html+='</div>';
-      if(d.video_url)html+='<br><a href="'+d.video_url+'" target="_blank" style="display:inline-block;margin-top:8px;padding:6px 12px;background:rgba(61,140,224,0.15);border-radius:8px;color:#3d8ce0;font-size:11px;text-decoration:none">Telecharger video</a>';
+      if(d.video_url){
+        html+='<div style="margin-top:10px">';
+        html+='<video src="'+d.video_url+'" controls style="width:100%;border-radius:8px;max-height:200px;margin-bottom:6px"></video>';
+        html+='<a href="'+d.video_url+'" download style="display:inline-block;padding:6px 12px;background:rgba(61,140,224,0.15);border-radius:8px;color:#3d8ce0;font-size:11px;text-decoration:none;margin-right:6px">Telecharger</a>';
+        html+='</div>';
+      }
       html+='<div class="card-actions">';
       html+='<button class="btn-sm btn-accept" onclick="updateDemande('+d.id+',\'en_cours\')">Accepter</button>';
       html+='<button class="btn-sm btn-done" onclick="updateDemande('+d.id+',\'livre\')">Livre</button>';
