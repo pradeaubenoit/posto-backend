@@ -111,6 +111,7 @@ input[type="color"] { width: 40px; height: 40px; border: none; border-radius: 8p
       <button class="sidebar-nav-btn" id="stab-demandes" onclick="showTab('demandes')">&#127916; Demandes</button>
       <button class="sidebar-nav-btn" id="stab-clients" onclick="showTab('clients')">&#128101; Clients</button>
       <button class="sidebar-nav-btn" id="stab-nouveau" onclick="showTab('nouveau')">&#43; Nouveau client</button>
+      <button class="sidebar-nav-btn" id="stab-reglages" onclick="showTab('reglages')">&#9881; R&eacute;glages</button>
     </div>
     <div class="sidebar-footer">
       <div style="font-size:12px;color:rgba(238,234,228,0.3);margin-bottom:8px">Connect&eacute; : <strong>Beno&icirc;t</strong></div>
@@ -131,6 +132,7 @@ input[type="color"] { width: 40px; height: 40px; border: none; border-radius: 8p
       <button class="nav-btn" id="tab-demandes" onclick="showTab('demandes')">&#127916;</button>
       <button class="nav-btn" id="tab-clients" onclick="showTab('clients')">&#128101;</button>
       <button class="nav-btn" id="tab-nouveau" onclick="showTab('nouveau')">&#43;</button>
+      <button class="nav-btn" id="tab-reglages" onclick="showTab('reglages')">&#9881;</button>
     </div>
 
     <div class="main-content">
@@ -200,6 +202,30 @@ input[type="color"] { width: 40px; height: 40px; border: none; border-radius: 8p
           <button class="btn-create" onclick="createClient()">&#43; Cr&eacute;er ce client</button>
           <div id="createSuccess" class="success-msg">&#10003; Client cr&eacute;&eacute; ! L'URL est pr&ecirc;te.</div>
           <div id="createError" style="color:#ff8a8a;font-size:13px;margin-top:10px;display:none"></div>
+        </div>
+      </div>
+
+    </div>
+
+      <!-- RÉGLAGES -->
+      <div id="page-reglages" style="display:none">
+        <div class="page-title">R&eacute;glages</div>
+        <div class="form-max">
+          <div class="form-group">
+            <label class="form-label">EMAIL DE R&Eacute;CEPTION DES DEMANDES</label>
+            <input type="text" id="admin-email" placeholder="votre@email.fr" />
+            <div style="font-size:11px;color:rgba(238,234,228,0.4);margin-top:6px">Toutes les demandes clients seront envoy&eacute;es &agrave; cette adresse</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">NOM AFFICH&Eacute; COMME CONTACT</label>
+            <input type="text" id="contact-name" placeholder="ex : Community Manager" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">MESSAGE D'ACCUEIL (page Contact)</label>
+            <input type="text" id="welcome-msg" placeholder="ex : R&eacute;ponse garantie sous 24h" />
+          </div>
+          <button class="btn-create" onclick="saveSettings()">&#10003; Enregistrer les r&eacute;glages</button>
+          <div id="settings-success" class="success-msg">&#10003; R&eacute;glages sauvegard&eacute;s !</div>
         </div>
       </div>
 
@@ -384,6 +410,26 @@ function createClient() {
     document.getElementById('createError').style.display = 'block';
     document.getElementById('createError').textContent = 'Erreur réseau : ' + err.message;
   });
+}
+function loadSettings(){
+  fetch(API+'/api/settings').then(r=>r.json()).then(function(s){
+    if(s.admin_email) document.getElementById('admin-email').value = s.admin_email;
+    if(s.contact_name) document.getElementById('contact-name').value = s.contact_name;
+    if(s.welcome_msg) document.getElementById('welcome-msg').value = s.welcome_msg;
+  }).catch(function(){});
+}
+
+function saveSettings(){
+  var data = {
+    admin_email: document.getElementById('admin-email').value.trim(),
+    contact_name: document.getElementById('contact-name').value.trim(),
+    welcome_msg: document.getElementById('welcome-msg').value.trim()
+  };
+  fetch(API+'/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+  .then(r=>r.json()).then(function(){
+    document.getElementById('settings-success').style.display='block';
+    setTimeout(function(){document.getElementById('settings-success').style.display='none';},2000);
+  }).catch(function(e){alert('Erreur: '+e.message);});
 }
 </script>
 </body>
