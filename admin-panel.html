@@ -284,16 +284,69 @@ function loadDashboard() {
 }
 
 function loadDemandes() {
-  fetch(API + '/api/demandes').then(r => r.json()).then(function(demandes) {
-    var html = '';
-    demandes.forEach(function(d) {
-      html += '<div class="card" id="dem-' + d.id + '"><div class="card-header"><div class="card-title">' + (d.client_name || 'Inconnu') + '</div>' + badgeHTML(d.status) + '</div>';
-      html += '<div class="card-info">&#128100; ' + (d.client_email || '') + '<br>&#128336; ' + formatDate(d.created_at) + '<br>&#127916; ' + (d.type || '') + '<br>&#128172; ' + (d.message || '').substring(0, 100) + (d.style ? '<br>&#127775; ' + d.style : '') + '</div>';
-      if (d.video_url) html += '<a href="' + d.video_url + '" target="_blank" class="video-link">&#127916; T&eacute;l&eacute;charger la vid&eacute;o</a>';
-      html += '<div class="card-actions"><button class="btn-sm btn-accept" onclick="updateDemande(' + d.id + ',\'en_cours\',this)">&#10003; Accepter</button><button class="btn-sm btn-done" onclick="updateDemande(' + d.id + ',\'livre\',this)">&#10003; Livr&eacute;</button><button class="btn-sm btn-danger" onclick="deleteDemande(' + d.id + ')">&#128465;</button></div></div>';
+  fetch(API+'/api/demandes').then(r=>r.json()).then(function(demandes){
+    var el=document.getElementById('demandes-list');
+    if(!el)return;
+    window._demandes=demandes;
+    if(demandes.length===0){el.innerHTML='<div style="text-align:center;padding:30px;color:rgba(238,234,228,0.3)">Aucune demande</div>';return;}
+    var html='';
+    demandes.forEach(function(d){
+      var bc=d.status==='nouveau'?'badge-new':d.status==='en_cours'?'badge-pending':'badge-done';
+      html+='<div class="card" id="dem-'+d.id+'">';
+      html+='<div class="card-header"><div class="card-title">'+(d.client_name||'Inconnu')+'</div><span class="badge '+bc+'">'+d.status.toUpperCase()+'</span></div>';
+      html+='<div class="card-info">';
+      if(d.client_email)html+='Email : '+d.client_email+'<br>';
+      html+='Date : '+new Date(d.created_at).toLocaleDateString('fr-FR')+'<br>';
+      html+='Type : '+(d.type||'')+'<br>';
+      if(d.message)html+='Message : '+(d.message).substring(0,200);
+      if(d.style)html+='<br>Style : '+d.style;
+      html+='</div>';
+      if(d.video_url)html+='<br><a href="'+d.video_url+'" target="_blank" style="display:inline-block;margin-top:8px;padding:6px 12px;background:rgba(61,140,224,0.15);border-radius:8px;color:#3d8ce0;font-size:11px;text-decoration:none">Telecharger video</a>';
+      html+='<div class="card-actions">';
+      html+='<button class="btn-sm btn-accept" onclick="updateDemande('+d.id+','en_cours')">Accepter</button>';
+      html+='<button class="btn-sm btn-done" onclick="updateDemande('+d.id+','livre')">Livre</button>';
+      html+='<button class="btn-sm" style="background:rgba(123,94,167,0.15);color:#b39ddb;border:1px solid rgba(123,94,167,0.3);padding:8px 12px;border-radius:8px;font-size:12px;cursor:pointer" onclick="toggleReply('+d.id+')">Repondre IA</button>';
+      html+='<button class="btn-sm btn-danger" onclick="deleteDemande('+d.id+')">Supprimer</button>';
+      html+='</div>';
+      html+='<div id="reply-'+d.id+'" style="display:none;margin-top:12px;padding:12px;background:rgba(123,94,167,0.06);border-radius:10px;border:1px solid rgba(123,94,167,0.2)">';
+      html+='<div style="font-size:9px;letter-spacing:2px;color:#b39ddb;font-family:monospace;margin-bottom:8px">REPONSE AU CLIENT</div>';
+      html+='<textarea id="rtext-'+d.id+'" style="width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#eeeae4;font-size:12px;font-family:inherit;min-height:80px;resize:vertical;outline:none" placeholder="Ta reponse..."></textarea>';
+      html+='<div style="display:flex;gap:8px;margin-top:8px">';
+      html+='<button style="padding:8px 12px;background:rgba(123,94,167,0.15);color:#b39ddb;border:1px solid rgba(123,94,167,0.3);border-radius:8px;font-size:12px;cursor:pointer" onclick="genReply('+d.id+')">IA Genere</button>';
+      html+='<button style="padding:8px 12px;background:rgba(61,140,224,0.15);color:#3d8ce0;border:1px solid rgba(61,140,224,0.3);border-radius:8px;font-size:12px;cursor:pointer" onclick="sendReply('+d.id+')">Envoyer</button>';
+      html+='<button style="padding:8px 12px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:8px;font-size:12px;cursor:pointer;color:rgba(238,234,228,0.4)" onclick="toggleReply('+d.id+')">Annuler</button>';
+      html+='</div></div>';
+      html+='</div>';
     });
-    document.getElementById('demandes-list').innerHTML = html || '<div class="empty-state">Aucune demande pour l\'instant</div>';
-  });
+    el.innerHTML=html;
+  }).catch(function(e){console.error(e);});
+}
+
+function toggleReply(id){
+  var el=document.getElementById('reply-'+id);
+  if(el)el.style.display=el.style.display==='none'?'block':'none';
+}
+
+function genReply(id){
+  var d=(window._demandes||[]).find(function(x){return x.id===id;});
+  if(!d)return;
+  var ta=document.getElementById('rtext-'+id);
+  ta.value='Generation en cours...';
+  fetch(API+'/api/generate-reply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:d.message||'',type:d.type||'',client_name:d.client_name||''})})
+  .then(r=>r.json()).then(function(data){ta.value=data.text||'';})
+  .catch(function(){ta.value='Erreur de generation';});
+}
+
+function sendReply(id){
+  var d=(window._demandes||[]).find(function(x){return x.id===id;});
+  var content=document.getElementById('rtext-'+id).value.trim();
+  if(!content){alert('Ecris une reponse avant d envoyer.');return;}
+  fetch(API+'/api/reply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({demande_id:id,content:content,client_email:d?d.client_email:'',client_name:d?d.client_name:''})})
+  .then(r=>r.json()).then(function(){
+    alert('Reponse envoyee !');
+    document.getElementById('reply-'+id).style.display='none';
+    loadDemandes();
+  }).catch(function(e){alert('Erreur: '+e);});
 }
 
 function loadClients() {
