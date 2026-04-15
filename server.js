@@ -75,6 +75,19 @@ app.get('/', (req,res) => res.sendFile(path.join(__dirname,'app.html')));
 app.get('/admin', (req,res) => res.sendFile(path.join(__dirname,'admin-panel.html')));
 app.get('/admin-panel.html', (req,res) => res.sendFile(path.join(__dirname,'admin-panel.html')));
 
+app.get('/download-video', async (req,res) => {
+  const url = req.query.url;
+  const name = req.query.name || 'video.mov';
+  if(!url) return res.status(400).send('URL manquante');
+  try {
+    const response = await fetch(url);
+    const buffer = await response.arrayBuffer();
+    res.setHeader('Content-Disposition', 'attachment; filename="' + name + '"');
+    res.setHeader('Content-Type', 'video/mp4');
+    res.send(Buffer.from(buffer));
+  } catch(err) { res.status(500).send('Erreur: ' + err.message); }
+});
+
 app.get('/:client', async (req,res) => {
   const clientId = req.params.client.toLowerCase();
   try {
@@ -208,19 +221,6 @@ app.post('/upload-video', express.raw({type:'*/*',limit:'200mb'}), async (req,re
     const result = await cloudinary.uploader.upload('data:video/mp4;base64,'+base64,{resource_type:'video',folder:'posto-videos',public_id:'video_'+Date.now()});
     res.json({url:result.secure_url,publicId:result.public_id});
   } catch(err) { res.status(500).json({error:err.message}); }
-});
-
-app.get('/download-video', async (req,res) => {
-  const url = req.query.url;
-  const name = req.query.name || 'video.mov';
-  if(!url) return res.status(400).send('URL manquante');
-  try {
-    const response = await fetch(url);
-    const buffer = await response.arrayBuffer();
-    res.setHeader('Content-Disposition', 'attachment; filename="' + name + '"');
-    res.setHeader('Content-Type', 'video/mp4');
-    res.send(Buffer.from(buffer));
-  } catch(err) { res.status(500).send('Erreur: ' + err.message); }
 });
 
 app.post('/generate', async (req,res) => {
