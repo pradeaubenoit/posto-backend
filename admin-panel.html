@@ -303,8 +303,8 @@ function loadDemandes() {
       html+='</div>';
       if(d.video_url)html+='<br><a href="'+d.video_url+'" target="_blank" style="display:inline-block;margin-top:8px;padding:6px 12px;background:rgba(61,140,224,0.15);border-radius:8px;color:#3d8ce0;font-size:11px;text-decoration:none">Telecharger video</a>';
       html+='<div class="card-actions">';
-      html+='<button class="btn-sm btn-accept" onclick="updateDemande('+d.id+','en_cours')">Accepter</button>';
-      html+='<button class="btn-sm btn-done" onclick="updateDemande('+d.id+','livre')">Livre</button>';
+      html+='<button class="btn-sm btn-accept" onclick="updateDemande('+d.id+',\'en_cours\')">Accepter</button>';
+      html+='<button class="btn-sm btn-done" onclick="updateDemande('+d.id+',\'livre\')">Livre</button>';
       html+='<button class="btn-sm" style="background:rgba(123,94,167,0.15);color:#b39ddb;border:1px solid rgba(123,94,167,0.3);padding:8px 12px;border-radius:8px;font-size:12px;cursor:pointer" onclick="toggleReply('+d.id+')">Repondre IA</button>';
       html+='<button class="btn-sm btn-danger" onclick="deleteDemande('+d.id+')">Supprimer</button>';
       html+='</div>';
