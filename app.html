@@ -439,6 +439,29 @@ input[type="file"] { display: none; }
     <div id="cg_success" class="success-msg">&#10003; Re&ccedil;u ! On te contacte sous 24h.</div>
   </div>
 
+  <div class="contact-option" onclick="toggleForm('form-logo')">
+    <div class="contact-icon">&#127981;</div>
+    <div>
+      <div class="contact-title">Cr&eacute;ation logo</div>
+      <div class="contact-desc">Identit&eacute; visuelle professionnelle g&eacute;n&eacute;r&eacute;e par IA</div>
+      <div class="contact-price">Sur devis</div>
+    </div>
+  </div>
+  <div id="form-logo" class="contact-form">
+    <span class="label">TON NOM</span>
+    <input type="text" id="cl_name" placeholder="Pr&eacute;nom Nom" />
+    <span class="label">TON EMAIL</span>
+    <input type="text" id="cl_email" placeholder="email@exemple.fr" />
+    <span class="label">NOM DE TON ENTREPRISE</span>
+    <input type="text" id="cl_company" placeholder="ex : Boulangerie Martin" />
+    <span class="label">D&Eacute;CRIS TON LOGO ID&Eacute;AL</span>
+    <textarea id="cl_desc" placeholder="ex : logo moderne, couleurs bleues et blanc, minimaliste..."></textarea>
+    <button class="btn-gen" style="margin-top:12px" onclick="generateLogo()">&#10024; Propositions IA</button>
+    <div id="cl_proposals" style="display:none;margin-top:12px"></div>
+    <button class="btn-gen" style="margin-top:10px;display:none" id="cl_send_btn" onclick="sendContact('logo')">Envoyer ma demande</button>
+    <div id="cl_success" class="success-msg">&#10003; Re&ccedil;u ! On te contacte sous 24h.</div>
+  </div>
+
   <div class="contact-option" onclick="toggleForm('form-autre')">
     <div class="contact-icon">&#128172;</div>
     <div>
@@ -761,6 +784,31 @@ function useIdea(card){
 function toggleForm(id){
   var form=document.getElementById(id);
   form.style.display=form.style.display==='block'?'none':'block';
+}
+
+function generateLogo(){
+  var company = document.getElementById('cl_company').value.trim();
+  var desc = document.getElementById('cl_desc').value.trim();
+  if(!company||!desc){alert('Merci de remplir le nom de ton entreprise et la description.');return;}
+  var btn = event.target;
+  btn.textContent = 'Generation...';
+  btn.disabled = true;
+  fetch('https://posto-production-061c.up.railway.app/generate',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({cta:'Non',highlight:'Logo pour '+company+' : '+desc,title:'Concepts logo',aiTitle:'Non'})
+  }).then(r=>r.json()).then(function(d){
+    var txt = d.text || '';
+    var props = document.getElementById('cl_proposals');
+    props.style.display = 'block';
+    props.innerHTML = '<div style="font-size:9px;letter-spacing:2px;color:#b39ddb;font-family:monospace;margin-bottom:10px">PROPOSITIONS IA</div>' +
+      '<div style="font-size:13px;line-height:1.7;color:rgba(238,234,228,0.8);white-space:pre-wrap">'+txt+'</div>';
+    document.getElementById('cl_send_btn').style.display = 'block';
+    btn.textContent = 'Nouvelles propositions';
+    btn.disabled = false;
+  }).catch(function(){
+    btn.textContent = 'Propositions IA';
+    btn.disabled = false;
+  });
 }
 
 function sendContact(type){
