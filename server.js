@@ -32,6 +32,13 @@ async function initDB() {
         notes TEXT,
         created_at TIMESTAMP DEFAULT NOW()
       );
+      CREATE TABLE IF NOT EXISTS messages (
+        id SERIAL PRIMARY KEY,
+        demande_id INTEGER REFERENCES demandes(id) ON DELETE CASCADE,
+        sender VARCHAR(50) NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
       CREATE TABLE IF NOT EXISTS settings (
         id SERIAL PRIMARY KEY,
         key VARCHAR(100) UNIQUE NOT NULL,
@@ -114,6 +121,57 @@ app.put('/api/demandes/:id', async (req,res) => {
 app.delete('/api/demandes/:id', async (req,res) => {
   try { await pool.query('DELETE FROM demandes WHERE id=$1',[req.params.id]); res.json({success:true}); }
   catch(err) { res.status(500).json({error:err.message}); }
+});
+
+app.get('/api/messages/:demandeId', async (req,res) => {
+  try {
+    const r = await pool.query('SELECT * FROM messages WHERE demande_id=$1 ORDER BY created_at ASC', [req.params.demandeId]);
+    res.json(r.rows);
+  } catch(err) { res.status(500).json({error:err.message}); }
+});
+
+app.post('/api/messages', async (req,res) => {
+  const {demande_id, sender, content} = req.body;
+  try {
+    const r = await pool.query('INSERT INTO messages (demande_id,sender,content) VALUES ($1,$2,$3) RETURNING *', [demande_id, sender, content]);
+    res.json(r.rows[0]);
+  } catch(err) { res.status(500).json({error:err.message}); }
+});
+
+app.post('/api/reply', async (req,res) => {
+  const {demande_id, content, client_email, client_name} = req.body;
+  try {
+    await pool.query('INSERT INTO messages (demande_id,sender,content) VALUES ($1,$2,$3)', [demande_id, 'admin', content]);
+    const settingsRes = await pool.query("SELECT value FROM settings WHERE key='admin_email'");
+    const adminEmail = settingsRes.rows.length > 0 ? settingsRes.rows[0].value : 'pradeaubenoit@outlook.fr';
+    await emailjs.send('service_qjbwtf8', 'template_j6vpg4b', {
+      name: 'Posto Studio',
+      email: adminEmail,
+      type: 'Reponse a votre demande',
+      message: content,
+      style: 'N/A'
+    }, {publicKey:'Gg1Wl2WLrhqbfxyxO', privateKey:'EnL1sdzNyW0aSuGlZRVM8'});
+    res.json({success:true});
+  } catch(err) { res.status(500).json({error:err.message}); }
+});
+
+app.post('/api/generate-reply', async (req,res) => {
+  const {message, type, client_name} = req.body;
+  const prompt = 'Tu es un community manager professionnel. Redige une reponse courte et professionnelle a cette demande client.
+Client : '+client_name+'
+Type : '+type+'
+Demande : '+message+'
+
+Reponds directement sans introduction.';
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-api-key':process.env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await response.json();
+    res.json({text: data.content[0].text});
+  } catch(err) { res.status(500).json({error:err.message}); }
 });
 
 app.get('/api/settings', async (req,res) => {
