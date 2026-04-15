@@ -326,10 +326,15 @@ function loadDemandes() {
       if(d.message)html+='Message : '+(d.message).substring(0,200);
       if(d.style)html+='<br>Style : '+d.style;
       html+='</div>';
-      if(d.video_url){
+      var videoUrl = d.video_url || null;
+      if(!videoUrl && d.message){
+        var match = d.message.match(/https:\/\/res\.cloudinary\.com\/[^\s]+/);
+        if(match) videoUrl = match[0];
+      }
+      if(videoUrl){
         html+='<div style="margin-top:10px">';
-        html+='<video src="'+d.video_url+'" controls style="width:100%;border-radius:8px;max-height:200px;margin-bottom:6px"></video>';
-        html+='<a href="'+d.video_url+'" download style="display:inline-block;padding:6px 12px;background:rgba(61,140,224,0.15);border-radius:8px;color:#3d8ce0;font-size:11px;text-decoration:none;margin-right:6px">Telecharger</a>';
+        html+='<video src="'+videoUrl+'" controls style="width:100%;border-radius:8px;max-height:200px;margin-bottom:6px"></video>';
+        html+='<a href="'+videoUrl+'" target="_blank" style="display:inline-block;padding:6px 12px;background:rgba(61,140,224,0.15);border-radius:8px;color:#3d8ce0;font-size:11px;text-decoration:none">Telecharger</a>';
         html+='</div>';
       }
       html+='<div class="card-actions">';
