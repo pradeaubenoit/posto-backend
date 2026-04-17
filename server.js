@@ -1,3 +1,4 @@
+nano server.js
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -50,5 +51,20 @@ Réponds UNIQUEMENT dans ce format.`;
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;app.post('/send-invitation', async (req, res) => {
+  const { clientName, clientEmail, clientCode } = req.body;
+  try {
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: 'Posto <onboarding@resend.dev>',
+      to: clientEmail,
+      subject: `Bienvenue sur Posto, ${clientName} !`,
+      html: `<h2>Bienvenue sur Posto !</h2><p>Bonjour ${clientName},</p><p>Voici votre code d'accès :</p><h1 style="color:#3d8ce0;letter-spacing:4px;">${clientCode}</h1><p>Connectez-vous sur : <a href="https://delicate-blancmange-08d30e.netlify.app">Posto App</a></p><p>À bientôt !</p>`
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
