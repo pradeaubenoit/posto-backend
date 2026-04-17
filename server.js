@@ -40,7 +40,11 @@ Réponds UNIQUEMENT dans ce format.`;
     });
 
     const data = await response.json();
-    res.json({ text: data.content[0].text });
+    if (data.content && data.content[0]) {
+  res.json({ text: data.content[0].text });
+} else {
+  res.json({ error: "API error", details: JSON.stringify(data) });
+};
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
