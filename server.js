@@ -1,7 +1,8 @@
-nano server.js
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.use(cors({
   origin: '*',
